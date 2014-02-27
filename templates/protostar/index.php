@@ -40,6 +40,7 @@ $doc->addScript('templates/' .$this->template. '/js/template.js');
 
 // Add Stylesheets
 $doc->addStyleSheet('templates/'.$this->template.'/css/template.css');
+$doc->addStyleSheet('templates/'.$this->template.'/css/custom.css');
 
 // Load optional RTL Bootstrap CSS
 JHtml::_('bootstrap.loadCss', false, $this->direction);
@@ -147,7 +148,7 @@ else
 			<!-- Header -->
 			<header class="header" role="banner">
 				<div class="header-inner clearfix">
-					<a class="brand pull-left" href="<?php echo $this->baseurl; ?>">
+					<a class="brand pull-left" href="<?php echo $this->baseurl; ?>/index.php/privato">
 						<?php echo $logo;?> <?php if ($this->params->get('sitedescription')) { echo '<div class="site-description">'. htmlspecialchars($this->params->get('sitedescription')) .'</div>'; } ?>
 					</a>
 					<div class="header-search pull-right">
@@ -200,8 +201,8 @@ else
 				</a>
 			</p>
 			<p>
-				&copy; <?php echo date('Y'); ?> <?php echo $sitename; ?>
-			</p>
+        &copy; <?php echo date('Y'); ?> <?php echo $sitename; ?> ~ Credits: <a href="http://www.teddynet.net">Teddynet.net</a>
+      </p>
 		</div>
 	</footer>
 	<jdoc:include type="modules" name="debug" style="none" />
