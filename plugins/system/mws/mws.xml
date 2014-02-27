@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="system" version="2.5" method="upgrade">
+	<name>System - Masters Web Solutions</name>
+	<author>Christopher Masters | Masters Web Solutions</author>
+	<creationDate>February 2013</creationDate>
+	<copyright>Copyright (C) 2011 Christopher Masters DBA Masters Web Solutions. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later</license>
+	<authorEmail>chris@masterswebsolutions</authorEmail>
+	<authorUrl>www.masterswebsolutions.com</authorUrl>
+	<version>1.1</version>
+	<description>Masters Web Solutions System Plugin</description>
+	<files>
+		<filename plugin="mws">mws.php</filename>
+	</files>
+	<media destination="mws\plg_mws" folder="media">
+		<folder>css</folder>
+		<folder>images</folder>
+	</media>
+    <config>
+        <fields name="params"></fields>
+    </config>
+</extension>
