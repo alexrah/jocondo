@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="2.5">
+	<name>Package - Masters Web Solutions</name>
+	<author>Christopher Masters | Masters Web Solutions</author>
+	<creationDate>October 2013</creationDate>
+	<copyright>Copyright (C) 2011 Christopher Masters DBA Masters Web Solutions. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later</license>
+	<packagename>mws</packagename>
+	<version>1.0</version>
+	<description></description>
+	<files folder="packages">
+		<file type="library" id="lib_mws">lib_mws.zip</file>
+		<file type="plugin" id="mws" group="system">plg_mws.zip</file>
+	</files>
+	<scriptfile>install.script.php</scriptfile>
+</extension>

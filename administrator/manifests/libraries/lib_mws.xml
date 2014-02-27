@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade" version="2.5">
+    <name>Library - Masters Web Solutions</name>
+    <libraryname>mws</libraryname>
+    <author>Christopher Masters | Masters Web Solutions</author>
+	<creationDate>January 2013</creationDate>
+	<copyright>Copyright (C) 2011 Christopher Masters DBA Masters Web Solutions. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later</license>
+	<authorEmail>chris@masterswebsolutions.com</authorEmail>
+	<authorUrl>www.masterswebsolutions.com</authorUrl>
+    <version>1.12</version>
+    <description>Masters Web Solutions library.</description>
+	<files>
+		<filename>mws.php</filename>
+		<filename>defines.php</filename>
+		<folder>article</folder>
+		<folder>components</folder>
+        <folder>form</folder>
+        <folder>image</folder>
+		<folder>install</folder>
+        <folder>log</folder>
+        <folder>plugins</folder>
+		<folder>social</folder>
+        <folder>utilities</folder>
+    </files>
+</extension>

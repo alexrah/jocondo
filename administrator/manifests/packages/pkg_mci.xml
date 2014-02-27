@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="2.5">
+<name>Package - Masters Contact Info</name>
+<author>Christopher Masters | Masters Web Solutions</author>
+<creationDate>January 2013</creationDate>
+<copyright>Copyright (C) 2011 Christopher Masters DBA Masters Web Solutions. All rights reserved.</copyright>
+<license>GNU General Public License version 2 or later</license>
+<packagename>mci</packagename>
+<version>1.1</version>
+<description></description>
+<files folder="packages">
+<file type="module" id="mod_mci" client="site">mod_mci.zip</file>
+</files>
+<scriptfile>install.script.php</scriptfile>
+</extension>
