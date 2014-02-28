@@ -201,7 +201,7 @@ else
 				</a>
 			</p>
 			<p>
-        &copy; <?php echo date('Y'); ?> <?php echo $sitename; ?> ~ Credits: <a href="http://www.teddynet.net">Teddynet.net</a>
+        &copy; <?php echo date('Y'); ?> <?php echo $sitename; ?> ~ Credits: <a href="http://www.teddynet.net" target="_blank">Teddynet.net</a>
       </p>
 		</div>
 	</footer>

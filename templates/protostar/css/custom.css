@@ -19,7 +19,10 @@ body.site.fluid {
   background: url('../images/bg-wood.jpg') center top repeat-y;
 }
 
-p, .mci-row{ font-family: 'Open Sans'; }
+p, .mci-row {
+  font-family: 'Open Sans';
+  text-align: justify;
+}
 
 b {
   font-size: 1.1em;
