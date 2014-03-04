@@ -5,7 +5,8 @@
  * @copyright Copyright (c) 2011 Christopher Masters DBA Masters Web Solutions. All Rights Reserved.
  * @license GNU/GPL 2, http://www.gnu.org/licenses/gpl-2.0.html
  */
-defined('_JEXEC') or die('Restricted access'); // no direct access
+defined('_JEXEC') or die('Restricted access');
+
 /**
  * Masters Contact Info helper class.
  */
@@ -20,8 +21,7 @@ class modMCIHelper
 	/**
 	 * Class constructor.
 	 *
-	 * @return void
-	 * @since 2.3
+	 * @return
 	 */
 	public function __construct($ext)
 	{
@@ -31,55 +31,49 @@ class modMCIHelper
 	/**
 	 * Gets contacts and their details from the contact component and groups them by category or contact.
 	 *
-	 * @param object $params The module parameters
+	 * @param	JRegistry	$params	The module parameters
 	 *
-	 * @return array The modified contacts and their details
-	 * @since 2.3
+	 * @return	array
 	 */
 	public function getContacts(&$params)
 	{
-		$query = $this->buildQuery($params);
-		if ($query)
+		$contactGrouping = $params->get('contact_grouping', 'category');
+		
+		// Get the query object
+		$query = MWS::$db->getQuery(true);
+		
+		// Build the query and set the limit
+		if ($contactGrouping == 'category')
 		{
-			$contacts = $this->runQuery($query, $params);
-			if ($contacts)
-			{
-				return $this->formatContacts($contacts, $params);
-			}
-		}	
+			$query = $this->buildCatQuery($query, $params);
+			$limit = $params->get('category_limit', '');
+		} elseif ($contactGrouping == 'contact')
+		{
+			$query = $this->buildContactsQuery($query, $params);
+			$limit = $params->get('contact_limit', '');
+		}
+		
+		// Set the limit
+		$limit = (!$limit) ? (int) '0' : (int) $limit;
+		
+		// Set the query string
+		MWS::$db->setQuery($query, 0, $limit);
+		
+		// Load the query results
+		$contacts = MWS::$db->loadObjectList();
+		
+		if ($contacts) return $this->formatContacts($contacts, $params);
 	}
 	
 	/**
-	 * Builds the query to get contact details.
-	 * 
-	 * @param object $params The module parameters
-	 * 
-	 * @return object The query
-	 * @since 2.3
-	 */
-	private function buildQuery($params)
-	{
-		$contactGrouping = $params->get('contact_grouping', 'all');
-		$query = MWS::$db->getQuery(true);
-		
-		if ($contactGrouping == 'category')
-		{
-			return $this->queryCategory($query, $params);
-		} elseif ($contactGrouping == 'contact')
-		{
-			return $this->queryContacts($query, $params);
-		}
-	}
-	/**
 	 * Finishes building the query for contacts by category.
 	 * 
-	 * @param object $query The query
-	 * @param object $params The module parameters
+	 * @param	JDatabaseQuery	$query	The query
+	 * @param	JRegistry		$params	The module parameters
 	 * 
-	 * @return object The query
-	 * @since 2.3
+	 * @return	JDatabaseQuery
 	 */
-	private function queryCategory($query, $params)
+	private function buildCatQuery($query, $params)
 	{
 		// Get parameter variables
 		$catIds = $params->get('categories', '');
@@ -104,10 +98,8 @@ class modMCIHelper
 		{
 			$catOrderBy = 'RAND()';
 			$catContactOrderBy = '';
-		} else
-		{
-			$catContactOrderBy = ', ' . $catContactOrderBy;
 		}
+		else $catContactOrderBy = ', ' . $catContactOrderBy;
 		
 		// Determine categories
 		if (isset($catIds[0]) && $catIds[0] != '')
@@ -115,18 +107,10 @@ class modMCIHelper
 			$categories = '';
 			foreach ($catIds as $catId)
 			{
-				if ($includeSubCategories)
-				{
-					$categories .= '(contact.catid = ' . $catId . ' OR categories.parent_id = ' . $catId . ') OR ';
-				} else
-				{
-					$categories .= 'catid = ' . $catId . ' OR ';
-				}
+				if ($includeSubCategories) $categories .= '(contact.catid = ' . $catId . ' OR categories.parent_id = ' . $catId . ') OR ';
+				else $categories .= 'catid = ' . $catId . ' OR ';
 			}
-			if ($categories)
-			{
-				$categories = JString::rtrim($categories, ' OR ');
-			}
+			if ($categories) $categories = JString::rtrim($categories, ' OR ');
 		}
 		
 		// Add categories and order to query
@@ -134,10 +118,8 @@ class modMCIHelper
 		{
 			$query->where($categories);
 			$query->order($catOrderBy . $catContactOrderBy);
-		} else
-		{
-			$query->order($catOrderBy . $catContactOrderBy);
-		}//echo $query;
+		}
+		else $query->order($catOrderBy . $catContactOrderBy);//echo $query;
 		
 		return $query;
 	}
@@ -145,13 +127,12 @@ class modMCIHelper
 	/**
 	 * Finishes building the query for contacts by contact.
 	 * 
-	 * @param object $query The query
-	 * @param object $params The module parameters
+	 * @param	JDatabaseQuery	$query	The query
+	 * @param	JRegistry		$params	The module parameters
 	 * 
-	 * @return object The query
-	 * @since 2.3
+	 * @return	JDatabaseQuery
 	 */
-	private function queryContacts($query, $params)
+	private function buildContactsQuery($query, $params)
 	{
 		// Get parameter variables
 		$contactIds = $params->get('contacts', '');
@@ -170,14 +151,8 @@ class modMCIHelper
 		if (isset($contactIds[0]) && $contactIds[0] != '')
 		{
 			$contacts = '';
-			foreach ($contactIds as $contact)
-			{
-				$contacts .= 'contact.id = ' . $contact . ' OR ';
-			}
-			if ($contacts)
-			{
-				$contacts = JString::rtrim($contacts, ' OR ');
-			}
+			foreach ($contactIds as $contact) $contacts .= 'contact.id = ' . $contact . ' OR ';
+			if ($contacts) $contacts = JString::rtrim($contacts, ' OR ');
 		}
 		
 		// Add contacts and order to query
@@ -185,99 +160,96 @@ class modMCIHelper
 		{
 			$query->where($contacts);
 			$query->order($contactOrderBy);
-		} else
-		{
-			$query->order($contactOrderBy);
-		}//echo $query;
+		}
+		else $query->order($contactOrderBy);//echo $query;
 		
 		return $query;
 	}
 	
 	/**
-	 * Runs the query.
-	 * 
-	 * @param object $query The query
-	 * @param object $params The module parameters
-	 * 
-	 * @return array The contact details
-	 * @since 2.3
-	 */
-	private function runQuery($query, $params)
-	{
-		MWS::$db->setQuery($query);
-		return MWS::$db->loadObjectList();
-	}
-	
-	/**
 	 * Formats the contact details for display.
 	 * 
-	 * @param array $contacts The contact details
-	 * @param object $params The module parameters
+	 * @param	array		$contacts	The contact details
+	 * @param	JRegistry	$params		The module parameters
 	 * 
-	 * @return array The formatted contacts
-	 * @since 2.3
+	 * @return	array
 	 */
 	private function formatContacts($contacts, $params)
 	{
-		$linkContact = $params->get('link_contact', 1);
-		$emailText = $params->get('email_text', '');
-		$nameTag = $params->get('name_tag', '');
-		$websiteTarget = $params->get('website_target', '');
-		$linkEmail = $params->get('link_email', 'mailto');
-		foreach ($contacts as $contact)
+		// ACL
+		$authorised = JFactory::getUser()->getAuthorisedViewLevels();
+		
+		foreach ($contacts as $i => $contact)
 		{
-			$link = 'index.php?option=com_contact&amp;view=contact&amp;id=' . $contact->id;
-			if ($contact->address)
+			if (!in_array($contact->access, $authorised)) unset($contacts[$i]);		
+			else 
 			{
-				$contact->address = nl2br($contact->address); // add HTML line break for new lines in Address
-			}
-			if ($contact->name)
-			{
-				if ($linkContact)
+				$link = 'index.php?option=com_contact&amp;view=contact&amp;id=' . $contact->id;
+				
+				// add HTML line break for new lines in Address
+				if ($contact->address) $contact->address = nl2br($contact->address);
+				
+				if ($contact->name)
 				{
-					$contact->name = JHtml::_('link', $link, $contact->name); // link name to contact page
+					// link name to contact page
+					if ($params->get('link_contact', 1)) $contact->name = JHtml::_('link', $link, $contact->name);
+				
+					// Add HTML tag to name
+					$nameTag = $params->get('name_tag', '');
+					if ($nameTag) $contact->name = '<'. $nameTag .'>' . $contact->name . '</'. $nameTag .'>';
 				}
-				if ($nameTag)
+				
+				// Format image
+				if ($contact->image)
 				{
-					$contact->name = '<'. $nameTag .'>' . $contact->name . '</'. $nameTag .'>';
+					$contact->articleLink = $link;
+					$title = $contact->name;
+					$contact->title = strip_tags($title);
+					$contact->image = MWSImage::getImgThumb($contact, $params, 'thumbTag');
 				}
-			}
-			if ($contact->image)
-			{
-				$contact->articleLink = $link;
-				$title = $contact->name;
-				$contact->title = strip_tags($title);
-				$contact->image = MWSImage::getImgThumb($contact, $params, 'thumbTag');
-			}
-			if ($contact->email_to)
-			{
-				if ($linkEmail == 'mailto')
+				
+				// Link email
+				if ($contact->email_to)
 				{
-					$email = !$emailText ? 1 : 0;
-					$contact->email_to = JHtml::_('email.cloak', $contact->email_to, 1, $emailText, $email);
-				} elseif ($linkEmail == 'contact')
-				{
-					$text = $emailText ? $emailText : $contact->email_to;
-					$contact->email_to = JHtml::_('link', $link, $text);
+					$emailText = $params->get('email_text', '');
+					$linkEmail = $params->get('link_email', 'mailto');
+					if ($linkEmail == 'mailto')
+					{
+						$email = !$emailText ? 1 : 0;
+						$contact->email_to = JHtml::_('email.cloak', $contact->email_to, 1, $emailText, $email);
+					}
+					elseif ($linkEmail == 'contact')
+					{
+						$text = $emailText ? $emailText : $contact->email_to;
+						$contact->email_to = JHtml::_('link', $link, $text);
+					}
 				}
-			}
-			if ($contact->webpage)
-			{
-				$target = $websiteTarget ? 'target="' . $websiteTarget . '"' : '';
-				$contact->webpage = JHtml::_('link', $contact->webpage, $contact->webpage, $target); // link website
+				
+				// Link website
+				if ($contact->webpage)
+				{
+					$websiteTarget = $params->get('website_target', '');
+					$target = $websiteTarget ? 'target="' . $websiteTarget . '"' : '';
+					$contact->webpage = JHtml::_('link', $contact->webpage, $contact->webpage, $target);
+				}
+				
+				// Add comma if format is city, state zip
+				if ($contact->suburb && $params->get('city_state_zip_inline', 1)) $contact->suburb .= ', ';
 			}
 		}
+		
+		$contacts = array_values($contacts);
+		
 		return $contacts;
 	}
 	
 	/**
 	 * Breaks an object into an array grouped by a type. Must be pre sorted.
 	 *
-	 * @param array $list The contact information
-	 * @param string $fieldName The group by type
+	 * @param	array	$list		The contact information
+	 * @param	string	$fieldName	The group by type
 	 *
-	 * @return array The articles grouped by a type
-	 * @since 2.3
+	 * @return	array
 	 */
 	public function groupBy($list, $fieldName)
 	{
@@ -292,6 +264,7 @@ class modMCIHelper
 			$grouped[$item->$fieldName][$key] = $item;
 			unset($list[$key]);
 		}
+		
 		return $grouped;
 	}
 }

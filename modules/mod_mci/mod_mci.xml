@@ -7,7 +7,7 @@
 	<license>GNU/GPL</license>
 	<authorEmail>chris@masterswebsolutions.com</authorEmail>
 	<authorUrl>http://www.masterswebsolutions.com</authorUrl>
-    <version>2.7.1.11</version>
+    <version>2.10.1.11</version>
     <description>
 	<![CDATA[
 	<div id="mws">
@@ -103,6 +103,10 @@
 						<option value="RAND()">MOD_MCI_OPTION_RANDOM</option>
 				</field>
 				
+				<field name="category_limit" type="text" default=""
+					label="MOD_MCI_CATEGORY_LIMIT_LABEL"
+					description="MOD_MCI_CATEGORY_LIMIT_DESC" />
+				
 			</fieldset>
 			<fieldset name="contacts" label="MOD_MCI_FIELDSET_CONTACT">
 			
@@ -125,6 +129,10 @@
 						<option value="contact.name DESC">MOD_MCI_OPTION_NAME_DESCENDING</option>
 						<option value="RAND()">MOD_MCI_OPTION_RANDOM</option>
 				</field>
+				
+				<field name="contact_limit" type="text" default=""
+					label="MOD_MCI_CONTACT_LIMIT_LABEL"
+					description="MOD_MCI_CONTACT_LIMIT_DESC" />
 				
 				<field type="spacer" class="mws" label="MOD_MCI_HEADING_SINGLE_CONTACT" />
 				
@@ -525,6 +533,13 @@
 				<field name="link_contact" type="radio" class="btn-group btn-group-yesno" default="1"
 					label="MOD_MCI_DISPLAY_LINK_CONTACT_LABEL"
 					description="MOD_MCI_DISPLAY_LINK_CONTACT_DESC">
+						<option value="1">JYES</option>
+						<option value="0">JNO</option>
+				</field>
+				
+				<field name="city_state_zip_inline" type="radio" class="btn-group btn-group-yesno" default="1"
+					label="MOD_MCI_DISPLAY_CITY_STATE_ZIP_INLINE_LABEL"
+					description="MOD_MCI_DISPLAY_CITY_STATE_ZIP_INLINE_DESC">
 						<option value="1">JYES</option>
 						<option value="0">JNO</option>
 				</field>

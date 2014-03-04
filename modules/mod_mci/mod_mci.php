@@ -120,6 +120,7 @@ $rowStyle = ' style="margin-top:' . $rowMargin . 'px;"';
 $rowCSS = 'overflow:hidden;margin-bottom:' . $rowMargin . 'px;';
 
 // classes & other CSS
+$cityStateZipInline = $params->get('city_state_zip_inline', 1);
 $suffix = $containerCSS = $beforeCSS = $afterCSS  = '';
 if ($params->get('moduleclass_sfx', ''))
 {

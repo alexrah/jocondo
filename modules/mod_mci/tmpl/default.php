@@ -35,7 +35,11 @@ defined('_JEXEC') or die('Restricted access'); // no direct access
 <div class="mci-item item-<?php echo $i;$i++;?><?php if ($evenOdd) echo $evenOdd; ?>" id="mci-contact-<?php echo $contact->id; ?>"<?php echo $itemCSS; ?>>
 <?php foreach ($contactDetails as $contactDetail) : ?>
 <?php if ($contactDetail && $contact->$contactDetail) : ?>
+<?php if ($cityStateZipInline && ($contactDetail == 'suburb' || $contactDetail == 'state' || $contactDetail == 'postcode')) : ?>
+<span class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></span>
+<?php else : ?>
 <div class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></div>
+<?php endif; ?>
 <?php endif; ?>
 <?php endforeach; ?>
 </div><?php // end item ?>
@@ -65,7 +69,11 @@ defined('_JEXEC') or die('Restricted access'); // no direct access
 <div class="mci-row mci-item item-<?php echo $i;$i++;?><?php if ($evenOdd) echo $evenOdd; ?>" id="mci-contact-<?php echo $contact->id; ?>"<?php echo $itemCSS; ?>>
 <?php foreach ($contactDetails as $contactDetail) : ?>
 <?php if ($contactDetail && $contact->$contactDetail) : ?>
+<?php if ($cityStateZipInline && ($contactDetail == 'suburb' || $contactDetail == 'state' || $contactDetail == 'postcode')) : ?>
+<span class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></span>
+<?php else : ?>
 <div class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></div>
+<?php endif; ?>
 <?php endif; ?>
 <?php endforeach; ?>
 </div><?php // end item ?>
@@ -102,7 +110,11 @@ defined('_JEXEC') or die('Restricted access'); // no direct access
 <div class="mci-item item-<?php echo $i;$i++;?><?php if ($evenOdd) echo $evenOdd; ?>"<?php echo $itemCSS; ?>>
 <?php foreach ($contactDetails as $contactDetail) : ?>
 <?php if ($contactDetail && $contact->$contactDetail) : ?>
+<?php if ($cityStateZipInline && ($contactDetail == 'suburb' || $contactDetail == 'state' || $contactDetail == 'postcode')) : ?>
+<span class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></span>
+<?php else : ?>
 <div class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></div>
+<?php endif; ?>
 <?php endif; ?>
 <?php endforeach; ?>
 </div><?php // end item ?>

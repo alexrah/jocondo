@@ -1,3 +1,10 @@
+@import url(http://fonts.googleapis.com/css?family=Sail);
+
+@import url(http://fonts.googleapis.com/css?family=PT+Sans:400,700);
+
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700);
+
+
 .contactinfo_scheda, .custom_footer, .item-page, .scheda, .blog {
   min-height: 20px;
   padding: 19px;
@@ -14,17 +21,61 @@
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
 }
 
+.scheda .banner {
+     background-color: #dedede;
+/*   font-size: 180%; */
+/*   line-height: 110%; */
+/*   text-transform: uppercase; */
+}
+
+.banner .mci-item {
+  font-family: 'PT Sans', sans-serif;
+  /* font-family: 'Droid Sans', sans-serif; */
+  font-size: 300%;
+  line-height: 110%;
+  text-transform: lowercase;
+  text-align: center;
+  /* background-color: pink; */
+  letter-spacing: -3px;
+}
+
+#mci-contact-6 .field-name { 
+  margin-top: 2%;
+  letter-spacing: 1px;
+  font-weight: bold;
+  font-size: 120%;
+}
+
+
+/* #mci-contact-6 .mci-thumbnail { float: left!important; } */
+
 
 body.site.fluid {
   background: url('../images/bg-wood.jpg') center top repeat-y;
 }
 
 p, .mci-row {
-  font-family: 'Open Sans';
+  /* font-family: 'Open Sans'; */
   text-align: justify;
 }
 
 b {
   font-size: 1.1em;
   color: #0088cc;
+}
+
+.scadenziario h3 {
+  color: red;
+}
+
+h2, h3, .site-title{
+  font-family: 'Sail';
+}
+
+@media screen and (max-width: 675px){
+  #mci-contact-6 {
+    font-size: 200%;
+    line-height: 130%;
+  }
+  #mci-contact-6 .mci-thumbnail { float: none!important; }
 }
