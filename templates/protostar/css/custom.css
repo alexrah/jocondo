@@ -39,13 +39,19 @@
   letter-spacing: -3px;
 }
 
-#mci-contact-6 .field-name { 
+/* #mci-contact-6 .field-name {  */
+.scheda .banner .field-name { 
   margin-top: 2%;
   letter-spacing: 1px;
   font-weight: bold;
   font-size: 120%;
 }
 
+.scheda .banner .mci-thumbnail img {
+  border-radius: 2%;
+  -webkit-border-radius: 2%;
+  -moz-border-radius: 2%;
+}
 
 /* #mci-contact-6 .mci-thumbnail { float: left!important; } */
 
@@ -68,14 +74,15 @@ b {
   color: red;
 }
 
-h2, h3, .site-title{
-  font-family: 'Sail';
-}
+/* h2, h3, .site-title{ */
+  /* font-family: 'Sail'; */
+/* } */
 
 @media screen and (max-width: 675px){
   #mci-contact-6 {
     font-size: 200%;
     line-height: 130%;
   }
-  #mci-contact-6 .mci-thumbnail { float: none!important; }
+  /* #mci-contact-6 .mci-thumbnail { float: none!important; } */
+  .scheda .banner .mci-thumbnail { float: none!important; }
 }
