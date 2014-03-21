@@ -127,7 +127,10 @@ defined('_JEXEC') or die('Restricted access'); // no direct access
 <?php endif; ?>
 <?php endif; ?>
 <?php if ($afterText) : ?>
-<<?php echo $format . $afterCSS; ?> class="mci-after-text">
+<<?php echo $format . $afterCSS; ?> class="mci-after-text"> 
+<br />
+
+<a href="index.php?option=com_content&view=article&id=13" target="_self">Vedi Tutti...</a>
 <?php echo $afterText; ?>
 </<?php echo $format; ?>>
 <?php endif; ?>

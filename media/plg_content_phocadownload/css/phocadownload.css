@@ -43,7 +43,8 @@
 }
 
 .phocadownloadcategory32 {
-	background: #fdfdfd url(../images/icon-category-32.png) 5px center no-repeat;
+	/* background: #fdfdfd url(../images/icon-category-32.png) 5px center no-repeat;\
+ */
 	border:1px solid #cccccc;
 	margin:5px;
 	padding: 10px 10px 10px 40px;
@@ -175,5 +176,51 @@
 	border:1px solid #cccccc;
 	margin:5px;
 	padding: 30px 30px 30px 70px;
+}
+
+
+.phocadownloadcategory32 a {
+  font-size: 1.6em;
+  text-transform: uppercase;
+  display: table;
+  margin: 0% auto 1%;
+  padding-top: 128px;
+  padding-bottom: 2px;
+}
+
+#bilanci  .phocadownloadcategory32 {
+  background: url('../../../images/icons/checkbox-175.png') center no-repeat;
+  background-size: 128px;
+	padding: 0px;
+}
+
+#verbali  .phocadownloadcategory32 {
+  background: url('../../../images/icons/docu-175.png') center no-repeat;
+  background-size: 128px;
+  padding: 0px;
+}
+
+#banca  .phocadownloadcategory32 {
+  background: url('../../../images/icons/vault-175.png') center no-repeat;
+  background-size: 128px;
+  padding: 0px;
+}
+
+#assicurazioni  .phocadownloadcategory32 {
+  background: url('../../../images/icons/lock-175.png') center no-repeat;
+  background-size: 128px;
+  padding: 0px;
+}
+
+#regolamento  .phocadownloadcategory32 {
+  background: url('../../../images/icons/memo-175.png') center no-repeat;
+  background-size: 128px;
+  padding: 0px;
+}
+
+#altro  .phocadownloadcategory32 {
+  background: url('../../../images/icons/folder-175.png') center no-repeat;
+  background-size: 128px;
+  padding: 0px;
 }
 
