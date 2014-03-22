@@ -32,7 +32,20 @@ if (isset($this->error)) : ?>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('contact_subject'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('contact_subject'); ?></div>
+        <!-- <div class="controls">
+// <?php echo $this->form->getInput('contact_subject'); ?>
+</div> -->
+        <div class="controls">
+        <select name="location" id="location">
+  <option value="">Seleziona una richiesta</option>
+  <option value="guasti">Guasti</option>
+  <option value="riunioni">Riunioni</option>
+  <option value="pagamenti">Pagamenti</option>
+  <option value="reclami">Reclami</option> 
+  <option value="richieste">Richieste</option>
+  <option value="altro">Altro</option>
+</select>
+    </div>
 			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('contact_message'); ?></div>
