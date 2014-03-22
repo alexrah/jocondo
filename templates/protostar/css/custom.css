@@ -48,6 +48,7 @@
   font-weight: bold;
   font-size: 120%;
   text-transform: capitalize;
+  color: #08c;
 }
 
 .scheda .banner .mci-thumbnail img {
@@ -60,14 +61,20 @@
   text-transform: capitalize;
 }
 
+.scheda .banner .field-suburb, .scheda .banner .field-postcode {
+  font-size: 90%;
+}
+
 .scheda .banner .field-sortname1, .scheda .field-sortname2, .scheda .field-sortname3 {
   font-size: 50%;
   letter-spacing: 0px;
   line-height: 100%;
+  color: #08c;
 }
 
 .scheda .banner span.field-sortname1, .scheda span.field-sortname2, .scheda span.field-sortname3 {
   font-size: 140%; 
+  color: #333;
 }
 
 /* #mci-contact-6 .mci-thumbnail { float: left!important; } */
