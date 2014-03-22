@@ -37,6 +37,19 @@ defined('_JEXEC') or die('Restricted access'); // no direct access
 <?php if ($contactDetail && $contact->$contactDetail) : ?>
 <?php if ($cityStateZipInline && ($contactDetail == 'suburb' || $contactDetail == 'state' || $contactDetail == 'postcode')) : ?>
 <span class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></span>
+
+<?php elseif ($contactDetail == 'sortname1') : ?>
+<div class="mci-field field-<?php echo $contactDetail; ?>" style="text-transform: capitalize;">Codice Fiscale:   &nbsp;<span style="text-transform: uppercase;" class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></span>
+</div>
+<?php elseif ($contactDetail == 'sortname2') : ?>
+<div class="mci-field field-<?php echo $contactDetail; ?>" style="text-transform: uppercase ;">IBAN:   &nbsp;<span class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></span>
+</div>
+<?php elseif ($contactDetail == 'sortname3') : ?>
+<div class="mci-field field-<?php echo $contactDetail; ?>" style="text-transform: none ;">presso la filiale:   &nbsp;<span class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></span>
+</div>
+
+
+
 <?php else : ?>
 <div class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></div>
 <?php endif; ?>
@@ -110,10 +123,16 @@ defined('_JEXEC') or die('Restricted access'); // no direct access
 <div class="mci-item item-<?php echo $i;$i++;?><?php if ($evenOdd) echo $evenOdd; ?>"<?php echo $itemCSS; ?>>
 <?php foreach ($contactDetails as $contactDetail) : ?>
 <?php if ($contactDetail && $contact->$contactDetail) : ?>
+
 <?php if ($cityStateZipInline && ($contactDetail == 'suburb' || $contactDetail == 'state' || $contactDetail == 'postcode')) : ?>
 <span class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></span>
 <?php else : ?>
-<div class="mci-field field-<?php echo $contactDetail; ?>"><?php echo $contact->$contactDetail; ?></div>
+<?php if ($contactDetail == 'sortname1') : ?>
+<span class="mci-field field-<?php echo $contactDetail; ?>"><p>Codice Fiscale: </p><?php echo $contact->$contactDetail; ?></span>
+<?php endif; ?>
+
+
+<div class="mci-field field-<?php echo $contactDetail; ?>">Che barba: <?php echo $contact->$contactDetail; ?></div>
 <?php endif; ?>
 <?php endif; ?>
 <?php endforeach; ?>
