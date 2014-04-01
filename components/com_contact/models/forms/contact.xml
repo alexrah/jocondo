@@ -20,16 +20,29 @@
 			validate="contactemail"
 			required="true"
 		/>
-		<field name="contact_subject"
-			type="text"
-			id="contact-emailmsg"
-			size="60"
-			description="COM_CONTACT_CONTACT_MESSAGE_SUBJECT_DESC"
-			label="COM_CONTACT_CONTACT_MESSAGE_SUBJECT_LABEL"
-			filter="string"
-			validate="contactemailsubject"
-			required="true"
-		/>
+		<!-- <field name="contact_subject" -->
+		<!-- 	type="text" -->
+		<!-- 	id="contact-emailmsg" -->
+		<!-- 	size="60" -->
+		<!-- 	description="COM_CONTACT_CONTACT_MESSAGE_SUBJECT_DESC" -->
+		<!-- 	label="COM_CONTACT_CONTACT_MESSAGE_SUBJECT_LABEL" -->
+		<!-- 	filter="string" -->
+		<!-- 	validate="contactemailsubject" -->
+		<!-- 	required="true" -->
+		<!-- /> -->
+    <field name="contact_subject"
+    type="list"
+    default="1"
+    id="contact-emailmsg"
+  	description="COM_CONTACT_CONTACT_MESSAGE_SUBJECT_DESC"
+		label="COM_CONTACT_CONTACT_MESSAGE_SUBJECT_LABEL"
+		required="true"
+    >
+     <option value="0">Seleziona</option>
+     <option value="1">Guasti</option>
+     <option value="2">Interventi</option>
+     <option value="3">Informazioni</option>
+   </field>
 		<field name="contact_message"
 			type="textarea"
 			cols="50"
@@ -46,7 +59,7 @@
 			id="contact-email-copy"
 			description="COM_CONTACT_CONTACT_EMAIL_A_COPY_DESC"
 			label="COM_CONTACT_CONTACT_EMAIL_A_COPY_LABEL"
-			default="0"
+			default="1"
 		/>
 
 	</fieldset>
