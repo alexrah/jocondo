@@ -19,3 +19,4 @@
 2014-03-03T22:55:09+00:00	INFO	cookiefailure	Username e Password non coincidono o non hai ancora un account
 2014-03-03T22:55:28+00:00	INFO	cookiefailure	Username e Password non coincidono o non hai ancora un account
 2014-03-03T23:00:07+00:00	INFO	cookiefailure	Password vuota non consentita
+2014-04-09T12:54:02+00:00	INFO	cookiefailure	Username e Password non coincidono o non hai ancora un account
