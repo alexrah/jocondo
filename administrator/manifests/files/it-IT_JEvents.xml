@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="1.6" type="file" client="site" method="upgrade">
+<name>Italian translation for JEvents</name>
+<packagename>it-IT JEvents</packagename>
+<tag>it-IT</tag>
+<version>3.1.18</version>
+<creationdate>2013.12.06</creationdate>
+<author>HaZaRd</author>
+<authoremail>drh@gt5italia.it</authoremail>
+<authorurl>www.gt5italia.it</authorurl>
+<copyright>
+</copyright>
+<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+<description>File di lingua italiana per JEvents (frontend/backend) | Italian language file for Jevents (frontend/backend)</description>
+<fileset>
+<files folder="admin" target="administrator/language/it-IT">
+	<filename>it-IT.com_jevents.ini</filename>
+	<filename>it-IT.com_jevents.menu.ini</filename>
+	<filename>it-IT.com_jevents.sys.ini</filename>
+	<filename>it-IT.plg_finder_jevents.ini</filename>
+	<filename>it-IT.plg_finder_jevents.sys.ini</filename>
+	<filename>it-IT.plg_search_eventsearch.ini</filename>
+</files>
+<files folder="site" target="language/it-IT">
+	<filename>it-IT.com_jevents.ini</filename>
+</files>
+</fileset>
+</extension>
