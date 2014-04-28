@@ -19,7 +19,7 @@ if (isset($this->error)) : ?>
 <?php endif; ?>
 
 <div class="contact-form">
-	<form id="contact-form" action="<?php echo JRoute::_('index.php'); ?>" method="post" class="form-validate form-horizontal">
+	<form id="contact-form" action="<?php echo JRoute::_('index.php'); ?>" method="post" class="form-validate form-horizontal" enctype="multipart/form-data">
 		<fieldset>
 			<legend><?php echo JText::_('COM_CONTACT_FORM_LABEL'); ?></legend>
 			<div class="control-group">
@@ -30,6 +30,12 @@ if (isset($this->error)) : ?>
 				<div class="control-label"><?php echo $this->form->getLabel('contact_email'); ?></div>
 				<div class="controls"><?php echo $this->form->getInput('contact_email'); ?></div>
 			</div>
+	<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('contact_media'); ?></div>
+       <div class="controls">
+ <?php echo $this->form->getInput('contact_media'); ?>
+</div> 
+</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('contact_subject'); ?></div>
        <div class="controls">
@@ -84,6 +90,7 @@ if (isset($this->error)) : ?>
 				<input type="hidden" name="id" value="<?php echo $this->contact->slug; ?>" />
 				<?php echo JHtml::_('form.token'); ?>
 			</div>
+        <?php echo $this; ?>
 		</fieldset>
 	</form>
 </div>

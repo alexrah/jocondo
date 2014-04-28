@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -46,7 +46,9 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo JHTML::_('grid.id', $i, $row->mailid ); ?>
 					</td>
 					<td>
-						<?php echo acymailing_tooltip('<b>'.JText::_('JOOMEXT_ALIAS').' : </b>'.$row->alias, ' ', '', $this->escape($row->subject),acymailing_completeLink('notification&task=edit&mailid='.$row->mailid)); ?>
+						<?php
+						$subjectLine =  str_replace('<ADV>',$this->escape('<ADV>'),$row->subject);
+						echo acymailing_tooltip('<b>'.JText::_('JOOMEXT_ALIAS').' : </b>'.$row->alias, ' ', '', $subjectLine,acymailing_completeLink('notification&task=edit&mailid='.$row->mailid)); ?>
 					</td>
 					<td><?php echo $row->alias; ?></td>
 					<td align="center">

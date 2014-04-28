@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -40,20 +40,28 @@ p{margin:0px; padding:0px}
 
 .links a{color:#ababab}
 
-@media (max-width:450px){
-	table[class=w600], td[class=w600], table[class=w540], td[class=w540], img[class="w600"], img[class="w540"]{ width:100% !important;}
-	td[class=w30] { width:20px !important;}
-	.pict img {max-width:260px}
+@media (min-width:320px){
+	table[class=w600], td[class=w600] { width:320px !important;}
+	table[class=w540], td[class=w540] { width:260px !important;}
+	td[class=w30] { width:30px !important;}
+	.w600 img {max-width:320px; height:auto !important}
+	.w540 img {max-width:260px; height:auto !important}
 }
 
-@media (min-width: 450px) and (max-width: 600px){
-	table[class=w600], td[class=w600], table[class=w540], td[class=w540], img[class="w600"], img[class="w540"]{ width:100% !important;}
-	td[class=w30] { width:20px !important;}
-	.pict img {max-width:460px}
+@media (min-width: 480px){
+	table[class=w600], td[class=w600] { width:480px !important;}
+	table[class=w540], td[class=w540] { width:420px !important;}
+	td[class=w30] { width:30px !important;}
+	.w600 img {max-width:480px; height:auto !important}
+	.w540 img {max-width:420px; height:auto !important}
 }
 
 @media (min-width:600px){
-	.pict img {max-width:540px !important;  height:auto !important;}
+	table[class=w600], td[class=w600] { width:600px !important;}
+	table[class=w540], td[class=w540] { width:540px !important;}
+	td[class=w30] { width:30px !important;}
+	.w600 img {max-width:600px; height:auto !important}
+	.w540 img {max-width:540px; height:auto !important}
 }
 ';
 

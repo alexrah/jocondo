@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -34,7 +34,7 @@ class StatsViewStats extends acymailingView
 		if(empty($mailid)) return;
 
 		$doc = JFactory::getDocument();
-		$doc->addStyleSheet( ACYMAILING_CSS.'acyprint.css','text/css','print' );
+		$doc->addStyleSheet( ACYMAILING_CSS.'acyprint.css?v='.filemtime(ACYMAILING_MEDIA.'css'.DS.'acyprint.css'),'text/css','print' );
 
 		$db = JFactory::getDBO();
 		$db->setQuery('SELECT * FROM #__acymailing_history WHERE mailid = '.intval($mailid).' AND action="unsubscribed" LIMIT 10000');
@@ -383,7 +383,7 @@ class StatsViewStats extends acymailingView
 		if(empty($mailid)) return;
 
 		$doc = JFactory::getDocument();
-		$doc->addStyleSheet( ACYMAILING_CSS.'acyprint.css','text/css','print' );
+		$doc->addStyleSheet( ACYMAILING_CSS.'acyprint.css?v='.filemtime(ACYMAILING_MEDIA.'css'.DS.'acyprint.css'),'text/css','print' );
 
 		$mailClass = acymailing_get('class.mail');
 		$mailing = $mailClass->get($mailid);

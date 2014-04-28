@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -212,7 +212,7 @@ class EditorController extends acymailingController{
 					if(selectedImageBorder>0 ) border = ' border: solid ' +  selectedImageBorder + 'px; ';
 					if(selectedImageMargin>0) margin = ' margin:' +  selectedImageMargin + 'px; ';
 					else if(selectedImageMargin) margin = ' margin:' +  selectedImageMargin + '; ';
-					var imgSize = ' height =\"' + selectedImageWidth + '\" width = \"' + selectedImageHeight + '\"';
+					var imgSize = ' height =\"' + selectedImageHeight + '\" width = \"' + selectedImageWidth + '\"';
 							";
 			$sizeAndAlignTags = " style=\"' + height + width + align + border + margin +'\" ";
 
@@ -348,32 +348,15 @@ class EditorController extends acymailingController{
 
 
 				function calculateSize(newHeight, newWidth){
+					if((newHeight == '' && newWidth == '') || (newHeight == '' && newWidth == 0) || (newHeight == 0 && newWidth == '')) return;
 					var img = document.getElementById('acy_media_browser_selected_image');
-					if(img){
-						var width = img.naturalWidth;
-						var height = img.naturalHeight;
+					if(!img) return;
 
-						var newWidht = 0;
-						if(newHeight == 0) newHeight = 9999;
-						if(newWidth == 0) newWidth = 9999;
+					if(newHeight == 0)
+						document.getElementById('acy_media_browser_image_height').value =  parseInt(img.naturalHeight * (newWidth / img.naturalWidth));
 
-						if (height>0) var rHeight = newHeight / height;
-						if (width>0) var rWidth= newWidth / width;
-
-						if (rHeight > rWidth)
-							var ratio = rWidth;
-						else
-							var ratio = rHeight;
-
-						var calculatedHeight = parseInt(height * ratio);
-						var calculatedWidth = parseInt(width * ratio);
-
-						if(newHeight == 9999){
-							document.getElementById('acy_media_browser_image_height').value =  calculatedHeight;
-						}else{
-							 document.getElementById('acy_media_browser_image_width').value = calculatedWidth;
-						}
-					}
+					if(newWidth == 0)
+						document.getElementById('acy_media_browser_image_width').value =  parseInt(img.naturalWidth * (newHeight / img.naturalHeight));
 				}
 
 

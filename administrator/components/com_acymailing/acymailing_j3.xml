@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.0" method="upgrade">
 	<name>AcyMailing</name>
-	<creationDate>mars 2014</creationDate>
-	<version>4.6.0</version>
+	<creationDate>avril 2014</creationDate>
+	<version>4.6.2</version>
 	<author>Acyba</author>
 	<authorEmail>dev@acyba.com</authorEmail>
 	<authorUrl>http://www.acyba.com</authorUrl>

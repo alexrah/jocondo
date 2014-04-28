@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -93,7 +93,7 @@ if($params->get('effect') == 'mootools-box' AND JRequest::getString('tmpl') != '
 
 	$moduleCSS = $config->get('css_module','default');
 	if(!empty($moduleCSS)){
-		$doc->addStyleSheet( ACYMAILING_CSS.'module_'.$moduleCSS.'.css' );
+		$doc->addStyleSheet( ACYMAILING_CSS.'module_'.$moduleCSS.'.css?v='.filemtime(ACYMAILING_MEDIA.'css'.DS.'module_'.$moduleCSS.'.css'));
 	}
 	JHTML::_('behavior.modal','a.modal');
 	require(JModuleHelper::getLayoutPath('mod_acymailing','popup'));

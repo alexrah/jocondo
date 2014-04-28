@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -530,7 +530,7 @@ class templateClass extends acymailingClass{
 			$js .= "var link1 = d.createElement(\"link\");
 					link1.type = \"text/css\";
 					link1.rel = \"stylesheet\";
-					link1.href =  '".ACYMAILING_LIVE."media/com_acymailing/templates/css/template_".$tempid.".css?time=".time()."';
+					link1.href =  '".(rtrim(JURI::root(),'/').'/')."media/com_acymailing/templates/css/template_".$tempid.".css?v=".@filemtime(ACYMAILING_MEDIA.'templates'.DS.'css'.DS.'template_'.$tempid.'.css')."';
 					head.appendChild(link1);
 				";
 		}

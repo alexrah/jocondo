@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -93,12 +93,11 @@ defined('_JEXEC') or die('Restricted access');
 						<?php } else{
 							echo '<span class="acystatsbutton" style="margin-right:12px;">&nbsp;</span>';
 						 }
-						} ?>
-						<?php if($this->app->isAdmin()){
-							echo acymailing_tooltip('<b>'.JText::_('JOOMEXT_ALIAS').' : </b>'.$row->alias, ' ', '', $this->escape($row->subject),acymailing_completeLink('newsletter&task=edit&mailid='.$row->mailid));
-						} else{
-							echo acymailing_tooltip('<b>'.JText::_('JOOMEXT_ALIAS').' : </b>'.$row->alias, ' ', '', $this->escape($row->subject),acymailing_completeLink('frontnewsletter&task=edit&mailid='.$row->mailid));
-						}?>
+						}
+
+						$subjectLine =  str_replace('<ADV>',$this->escape('<ADV>'),$row->subject);
+						echo acymailing_tooltip('<b>'.JText::_('JOOMEXT_ALIAS').' : </b>'.$row->alias, ' ', '', $subjectLine,acymailing_completeLink(($this->app->isAdmin() ? '' : 'front').'newsletter&task=edit&mailid='.$row->mailid));
+						?>
 					</td>
 					<td align="center">
 						<?php echo acymailing_getDate($row->senddate); ?>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -150,12 +150,12 @@ class acyeditorHelper{
 		return $function;
 	}
 
-	function setStylesheet($tempid){
+	function setEditorStylesheet($tempid){
 
 		$app = JFactory::getApplication();
 		$cssurl = rtrim(JURI::root(),'/').'/'.($app->isAdmin() ? 'administrator/index.php?option=com_acymailing&ctrl=template':'index.php?option=com_acymailing&ctrl=fronttemplate').'&task=load&time='.time().'&tempid=';
 
-		$function = 'try{setStylesheet(\''.$this->name.'\',\''.$cssurl.'\'+'.$tempid.',\'media/com_acymailing/templates/css/template_\'+'.$tempid.'+\'.css\')}catch(err){}';
+		$function = 'try{setEditorStylesheet(\''.$this->name.'\',\''.$cssurl.'\'+'.$tempid.',\'media/com_acymailing/templates/css/template_\'+'.$tempid.'+\'.css\')}catch(err){}';
 
 		return $function;
 	}

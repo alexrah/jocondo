@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -162,6 +162,10 @@ class plgAcymailingTemplate extends JPlugin
 		$email->body = preg_replace_callback('/src="([^"]* [^"]*)"/Ui', array($this, '_convertSpaces'), $email->body);
 
 		$this->fixPictureSize($email->body);
+
+		$acypluginsHelper = acymailing_get('helper.acyplugins');
+		$acypluginsHelper->fixPictureDim($email->body);
+
 	}//endfct
 
 	public function _convertSpaces($matches) {
@@ -183,6 +187,8 @@ class plgAcymailingTemplate extends JPlugin
 			}
 			if(!empty($add)) $replace[$oneResult] = '<img '.implode(' ',$add).$results[2][$num];
 		}
+
+		if(empty($replace)) return;
 
 		$body = str_replace(array_keys($replace),$replace,$body);
 

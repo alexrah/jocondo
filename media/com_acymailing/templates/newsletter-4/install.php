@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -26,21 +26,33 @@ $styles['acymailing_content'] = 'text-align:justify;';
 $stylesheet = 'div,table,p{font-family: Verdana, Arial, Helvetica, sans-serif; font-size:12px; text-align:justify; color:#8c8c8c; margin:0px}
 div.info{text-align:center;padding:10px;font-size:11px;color:#a3a3a3;}
 
-@media (max-width:450px){
-	table[class=w600], td[class=w600],  table[class=w520], td[class=w520], table[class=w480], td[class=w480], img[class=w600]{ width:100% !important; }
+@media (min-width:320px){
+	table[class=w600], td[class=w600] { width: 320px !important;}
+	table[class=w520], td[class=w520] { width: 280px !important;}
+	table[class=w480], td[class=w480] { width: 260px !important;}
 	td[class=w40] { width: 20px !important;}
 	td[class=w20] { width: 10px !important;}
-	.pict img {max-width:240px; height:auto !important;}
+	.w600 img {max-width:320px; height:auto !important}
+	.w480 img {max-width:260px; height:auto !important;}
 }
 
-@media (min-width:450px) and (max-width:600px){
-	table[class=w600], td[class=w600],  table[class=w520], td[class=w520], table[class=w480], td[class=w480], img[class=w600]{ width:100% !important; }
+@media (min-width:480px) {
+	table[class=w600], td[class=w600] { width: 480px !important;}
+	table[class=w520], td[class=w520] { width: 440px !important;}
+	table[class=w480], td[class=w480] { width: 420px !important;}
 	td[class=w40] { width: 20px !important;}
 	td[class=w20] { width: 10px !important;}
-	.pict img {max-width:390px;  height:auto !important;}
+	.w600 img {max-width:480px; height:auto !important}
+	.w480 img {max-width:420px;  height:auto !important;}
 }
 @media (min-width:600px){
-	.pict img {max-width:480px !important;  height:auto !important;}
+	table[class=w600], td[class=w600] { width: 600px !important;}
+	table[class=w520], td[class=w520] { width: 520px !important;}
+	table[class=w480], td[class=w480] { width: 480px !important;}
+	td[class=w40] { width40px !important;}
+	td[class=w20] { width: 20px !important;}
+	.w600 img {max-width:600px; height:auto !important}
+	.w480 img {max-width:480px;  height:auto !important;}
 }
 ';
 

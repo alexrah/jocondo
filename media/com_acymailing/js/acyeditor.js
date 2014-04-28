@@ -1,6 +1,6 @@
 /**
  * @package    AcyMailing for Joomla!
- * @version    4.6.0
+ * @version    4.6.2
  * @author     acyba.com
  * @copyright  (C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license    GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -34,7 +34,10 @@ var templateShown = false;
 var urlAcyeditor;
 var boutonTags = "toolbar-popup-Acytags";
 var boutonMediaBrowser = "toolbar-popup-Acymediabrowser";
-var acyVersion = "4.6.0";
+var acyVersion = "4.6.2";
+var pasteType = "plain";
+var acyEnterMode = "br";
+var urlSite = "";
 
 var initIE = false;
 function Initialisation(id, type, urlBase, urlAdminBase, cssUrl, forceComplet, modeList, modeTemplate, modeArticle, joomla2_5, joomla3, back, tagAllowed, texteSuppression, titleSuppression, titleEdition, titleTemplateDelete, titleTemplateText, titleTemplatePicture, titleShowAreas) {
@@ -301,6 +304,19 @@ function Initialisation(id, type, urlBase, urlAdminBase, cssUrl, forceComplet, m
 			extraPluginsCKEditor += ',templatemode';
 			toolbarGroupsCKEditor.push({ name: 'templatemode', groups: [ "textarea", "picturearea", "deletearea", "-", "showarea" ]});
 		}
+		extraPluginsCKEditor += ',stylesheetparser';
+
+		if(pasteType == 'plain'){
+			pastePlain = true;
+			pasteWordSimple = false;
+		} else if(pasteType == 'simpleStyle'){
+			pastePlain = false;
+			pasteWordSimple = true;
+		}
+
+		if(acyEnterMode == 'p'){ enterM = CKEDITOR.ENTER_P;}
+		else if(acyEnterMode == 'div'){ enterM = CKEDITOR.ENTER_DIV;}
+		else{ enterM = CKEDITOR.ENTER_BR; }
 
 		editor = CKEDITOR.replace("edition_en_cours",{
 			toolbarGroups : toolbarGroupsCKEditor,
@@ -309,8 +325,14 @@ function Initialisation(id, type, urlBase, urlAdminBase, cssUrl, forceComplet, m
 			baseHref : urlBase,
 			filebrowserImageUploadUrl : urlBase + urlAcyeditor + 'kcfinder/upload.php?type=images',
 			removeButtons: 'Cut,Copy,Paste,Blockquote,HorizontalRule,SpecialChar,Symbol',
-			extraPlugins: extraPluginsCKEditor
+			removePlugins: 'contextmenu,liststyle,tabletools,image,forms',
+			extraPlugins: extraPluginsCKEditor,
+			forcePasteAsPlainText: pastePlain,
+			pasteFromWordRemoveFontStyles: pasteWordSimple,
+			enterMode: enterM
 		});
+
+		if(cssUrl != null){ editor.config.contentsCss = urlBase + cssUrl; }
 
 		editor.setData(code);
 		editor.on('instanceReady',function(e){
@@ -856,11 +878,14 @@ function IeCursorFix(avecPosition){
 	return true;
 }
 
-function setStylesheet(id, stylesheeturl, stylesheetpath){
+function setEditorStylesheet(id, stylesheeturl, stylesheetpath){
 	realstylesheetpath = stylesheetpath;
 	rangeIE = undefined;
 	var idIframe = id + "_ifr";
 	var linkCss = GetElement(id, "acy_template_css")[0];
+	if (editor != undefined){
+		editor.config.contentsCss = urlSite+stylesheetpath;
+	}
 	if (linkCss == undefined)
 	{
 		if (editor != undefined)
@@ -897,7 +922,9 @@ function SetStyleSheetEnBoucle(linkCss, urlBase, stylesheetpath, date){
 	}, 1500);
 }
 function SetStyleSheet(linkCss, urlBase, stylesheetpath, date){
-	linkCss.href = urlBase+stylesheetpath+"?time=" + date;
+	if(stylesheetpath.indexOf("template_0.css")<0){
+		linkCss.href = urlBase+stylesheetpath+"?time=" + date;
+	}
 }
 
 function ResizeIframe(id){
@@ -1541,14 +1568,32 @@ function ClickTemplateCKEditor(id, idElement, e){
 					topValue = "bottom";
 				}
 
+				extraPluginsCKEditor += ',stylesheetparser';
+
+				if(pasteType == 'plain'){
+					pastePlain = true;
+					pasteWordSimple = false;
+				} else if(pasteType == 'simpleStyle'){
+					pastePlain = false;
+					pasteWordSimple = true;
+				}
+
+				if(acyEnterMode == 'p'){ enterM = CKEDITOR.ENTER_P;}
+				else if(acyEnterMode == 'div'){ enterM = CKEDITOR.ENTER_DIV;}
+				else{ enterM = CKEDITOR.ENTER_BR; }
+
 				editor = iframeCKEDITOR.inline('edition_en_cours',
 				{
 					toolbarGroups: toolbarGroupsCKEditor,
 					removeButtons: 'Cut,Copy,Paste,Blockquote,RemoveFormat,Subscript,Superscript,Table,HorizontalRule,SpecialChar,Font,Symbol',
+					removePlugins: 'contextmenu,liststyle,tabletools,image,forms',
 					filebrowserImageUploadUrl : urlBase + urlAcyeditor + 'kcfinder/upload.php?type=images',
 					extraPlugins: extraPluginsCKEditor,
 					floatSpaceDockedOffsetX : newX,
-					sharedSpaces: { top: topValue }
+					sharedSpaces: { top: topValue },
+					forcePasteAsPlainText: pastePlain,
+					pasteFromWordRemoveFontStyles: pasteWordSimple,
+					enterMode: enterM
 				});
 
 				editor.on('instanceReady',function(){
@@ -1558,7 +1603,6 @@ function ClickTemplateCKEditor(id, idElement, e){
 					editor.on('change',function(e){ CleanEditorContent(id, e); IeCursorFix(); });
 					GetElement(id, "edition_en_cours")[0].onkeyup = function () { IeCursorFix(); };
 					GetElement(id, "edition_en_cours")[0].onclick = function () { IeCursorFix(); };
-					GetElement(id, "edition_en_cours")[0].onpaste = function(e){ CleanWord(e); IeCursorFix(); };
 					rangeIE = undefined;
 					IeCursorFix();
 
@@ -1612,7 +1656,6 @@ function ClickTemplateCKEditor(id, idElement, e){
 }
 
 function CleanWord(e){
-
 	var contenu = "";
 	if (e.clipboardData) {
 		var text = e.clipboardData.getData('text/plain');
@@ -1692,7 +1735,7 @@ function CheckDeselection(id, e){
 	var acyeditor_enedition = false;
 	while (parentElement != null && parentElement != undefined)
 	{
-		if (parentElement.className.indexOf('acyeditor_enedition') >= 0
+		if ((parentElement.className && parentElement.className.indexOf('acyeditor_enedition') >= 0)
 		 || parentElement.id == boutonTags
 		 || ClickSurPopup(parentElement))
 		{
@@ -1715,8 +1758,8 @@ function CheckDeselection(id, e){
 }
 
 function ClickSurPopup(element){
-	return (element.className.indexOf('cke_dialog_body') >= 0
-		 || element.className.indexOf('cke_dialog_background_cover') >= 0
+	return ((element.className  && (element.className.indexOf('cke_dialog_body') >= 0
+		 || element.className.indexOf('cke_dialog_background_cover') >= 0))
 		 || element.id == 'cke_edition_en_cours');
 }
 

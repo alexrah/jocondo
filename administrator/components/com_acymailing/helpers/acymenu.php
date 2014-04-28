@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -82,7 +82,7 @@ class acymenuHelper{
 		}
 
 		$doc = JFactory::getDocument();
-		$doc->addStyleSheet( ACYMAILING_CSS.'acymenu.css?v='.str_replace('.','',$config->get('version')) );
+		$doc->addStyleSheet( ACYMAILING_CSS.'acymenu.css?v='.str_replace('.','',$config->get('version')));
 
 		if(!ACYMAILING_J30) {
 			$menu = '<div id="acymenutop" class="donotprint"><ul>';

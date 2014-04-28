@@ -39,10 +39,22 @@
 		required="true"
     >
      <option value="0">Seleziona</option>
-     <option value="1">Guasti</option>
-     <option value="2">Interventi</option>
-     <option value="3">Informazioni</option>
+     <option value="Guasti">Guasti</option>
+     <option value="Interventi">Interventi</option>
+     <option value="Informazioni">Informazioni</option>
    </field>
+
+	<field name="contact_media"
+			type="file"
+			id="contact-media"
+			size="60"
+      accept="image/*"
+			description="COM_CONTACT_MEDIA_DESC"
+			label="COM_CONTACT_MEDIA_LABEL"
+			required="false"
+		/>
+
+
 		<field name="contact_message"
 			type="textarea"
 			cols="50"

@@ -114,7 +114,8 @@ class ContactControllerContact extends JControllerForm
 		// Set the success message if it was a success
 		if (!($sent instanceof Exception))
 		{
-			$msg = JText::_('COM_CONTACT_EMAIL_THANKS');
+      $msg = JText::_('COM_CONTACT_EMAIL_THANKS');
+      
 		}
 		else
 		{
@@ -153,6 +154,7 @@ class ContactControllerContact extends JControllerForm
 			$email		= JStringPunycode::emailToPunycode($data['contact_email']);
 			$subject	= $data['contact_subject'];
 			$body		= $data['contact_message'];
+      $file = $data['contact_media'];
 
 			// Prepare email body
 			$prefix = JText::sprintf('COM_CONTACT_ENQUIRY_TEXT', JUri::base());
@@ -163,6 +165,7 @@ class ContactControllerContact extends JControllerForm
 			$mail->addReplyTo(array($email, $name));
 			$mail->setSender(array($mailfrom, $fromname));
 			$mail->setSubject($sitename.': '.$subject);
+      $mail->addAttachment($file);
 			$mail->setBody($body);
 			$sent = $mail->Send();
 
@@ -181,6 +184,7 @@ class ContactControllerContact extends JControllerForm
 				$mail->setSender(array($mailfrom, $fromname));
 				$mail->setSubject($copysubject);
 				$mail->setBody($copytext);
+        $mail->addAttachment($file);
 				$sent = $mail->Send();
 			}
 

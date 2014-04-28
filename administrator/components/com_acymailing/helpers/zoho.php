@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -41,6 +41,7 @@ class acyzohoHelper {
 				$this->error = $explodedResults[1];
 				return false;
 			}
+
 			return $res;
 		}
 
@@ -48,6 +49,11 @@ class acyzohoHelper {
 			$xml = substr($res,strpos($res,'<?xml'));
 			$xml = new SimpleXMLElement($xml);
 			$emailArray= array();
+
+			if(empty($xml->result->$userList->row)){
+				$this->error .= 'There is no email Address in the '.$userList.' list';
+				return $emailArray;
+			}
 
 			foreach($xml->result->$userList->row as $key=>$row){
 				$informations = new stdClass();

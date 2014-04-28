@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -21,7 +21,7 @@ class TemplateController extends acymailingController{
 		if(empty($tempid)) exit;
 		$template = $class->get($tempid);
 
-
+		header("Content-type: text/css");
 		echo $class->buildCSS($template->styles,$template->stylesheet);
 		exit;
 	}
@@ -35,6 +35,8 @@ class TemplateController extends acymailingController{
 		$template = $class->get($tempid);
 		$class->applyAreas($template->body);
 		$class->save($template);
+
+		$class->createTemplateFile($tempid);
 
 		acymailing_display(JText::_('ACYEDITOR_ADDAREAS_DONE'));
 

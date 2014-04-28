@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -171,7 +171,14 @@ class DataController extends acymailingController{
 
 		echo $before.implode($separator,$allFields).$after.$eol;
 
-		$nbExport = 5000;
+		if(acymailing_bytes(ini_get('memory_limit'))>150000000){
+			$nbExport = 50000;
+		}elseif(acymailing_bytes(ini_get('memory_limit'))>80000000){
+			$nbExport = 15000;
+		}else{
+			$nbExport = 5000;
+		}
+
 		if(!empty($exportFieldsList)) $nbExport = 500;
 
 		$valDep = 0;

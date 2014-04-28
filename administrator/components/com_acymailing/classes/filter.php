@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -268,6 +268,13 @@ class filterClass extends acymailingClass{
 			$js .= ' function removeChosen(){
 				jQuery("#acybase_filters .chzn-container").remove();
 				jQuery("#acybase_filters .chzn-done").removeClass("chzn-done").show();
+
+				jQuery("#allfilters .chzn-container").remove();
+				jQuery("#allfilters .chzn-done").removeClass("chzn-done").show();
+
+				jQuery("#allactions .chzn-container").remove();
+				jQuery("#allactions .chzn-done").removeClass("chzn-done").show();
+
 			}
 			window.addEvent("domready", function(){removeChosen();
 				setTimeout(function(){

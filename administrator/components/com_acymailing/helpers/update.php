@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -13,6 +13,7 @@ class acyupdateHelper{
 
 	var $db;
 	var $errors = array();
+	var $bouncerulesversion = 2;
 
 	function acyupdateHelper(){
 		$this->db = JFactory::getDBO();
@@ -197,11 +198,6 @@ class acyupdateHelper{
 			$data[] = "('AcyMailing Cron Report {mainreport}', '<p>{report}</p><p>{detailreport}</p>', '',1, 'notification',0,  'report', 1,0)";
 		}
 
-		if(!in_array('notification_autonews',$notifications)){
-			$data[] = "('A Newsletter has been generated : \"{subject}\"', '<p>The Newsletter issue {issuenb} has been generated : </p><p>Subject : {subject}</p><p>{body}</p>', '',1, 'notification', 0, 'notification_autonews',1,0)";
-		}
-
-
 		if(!in_array('modif',$notifications)){
 			$data[] = "('Modify your subscription', '<p>Hello {subtag:name}, </p><p>You requested some changes on your subscription,</p><p>Please {modify}click here{/modify} to be identified as the owner of this account and then modify your subscription.</p>', '',1, 'notification', 0, 'modif', 1,0)";
 		}
@@ -211,511 +207,67 @@ class acyupdateHelper{
 			$JNotifications = acymailing_loadResultArray($this->db);
 			$this->db->setQuery("SELECT tempid FROM #__acymailing_template WHERE namekey = 'newsletter-4' LIMIT 1");
 			$conftemplate = (int) $this->db->loadResult();
-			if(ACYMAILING_J16){
-				if(!in_array('joomla-directReg', $JNotifications)){
-					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:COM_USERS_EMAIL_REGISTERED_BODY|param1|param2|param3}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-directReg', 1, ".$conftemplate.")";
+			if(ACYMAILING_J30){
+				if(!in_array('joomla-directRegNoPwd-j3', $JNotifications)){
+					$bodyNotif = $this->getJoomlaNotification('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '{trans:COM_USERS_EMAIL_REGISTERED_BODY_NOPW|param1|param2|param3}');
+					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-directRegNoPwd-j3', 1, ".$conftemplate.")";
 				}
+				if(!in_array('joomla-directReg-j3', $JNotifications)){
+					$bodyNotif = $this->getJoomlaNotification('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '{trans:COM_USERS_EMAIL_REGISTERED_BODY|param1|param2|param3|param4|param5}');
+					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-directReg-j3', 1, ".$conftemplate.")";
+				}
+			} elseif(ACYMAILING_J16){
+				if(!in_array('joomla-directReg', $JNotifications)){
+					$bodyNotif = $this->getJoomlaNotification('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '{trans:COM_USERS_EMAIL_REGISTERED_BODY|param1|param2|param3}');
+					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-directReg', 1, ".$conftemplate.")";
+				}
+			}
+			if(ACYMAILING_J16){
+
 				if(!in_array('joomla-ownActivReg', $JNotifications)){
-					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY|param1|param2|param3|param4|param5|param6}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-ownActivReg', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '{trans:COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY|param1|param2|param3|param4|param5|param6}');
+					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-ownActivReg', 1, ".$conftemplate.")";
 				}
 				if(!in_array('joomla-ownActivRegNoPwd', $JNotifications)){
-					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY_NOPW|param1|param2|param3|param4|param5}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-ownActivRegNoPwd', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '{trans:COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY_NOPW|param1|param2|param3|param4|param5}');
+					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-ownActivRegNoPwd', 1, ".$conftemplate.")";
 				}
 				if(!in_array('joomla-adminActivReg', $JNotifications)){
-					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY|param1|param2|param3|param4|param5|param6}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-adminActivReg', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '{trans:COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY|param1|param2|param3|param4|param5|param6}');
+					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-adminActivReg', 1, ".$conftemplate.")";
 				}
 				if(!in_array('joomla-adminActivRegNoPwd', $JNotifications)){
-					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY_NOPW|param1|param2|param3|param4|param5}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-adminActivRegNoPwd', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '{trans:COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY_NOPW|param1|param2|param3|param4|param5}');
+					$data[] = "('{trans:COM_USERS_EMAIL_ACCOUNT_DETAILS|param1|param2}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-adminActivRegNoPwd', 1, ".$conftemplate.")";
 				}
 				if(!in_array('joomla-usernameReminder', $JNotifications)){
-					$data[] = "('{trans:COM_USERS_EMAIL_USERNAME_REMINDER_SUBJECT|param1}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:COM_USERS_EMAIL_USERNAME_REMINDER_SUBJECT|param1}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:COM_USERS_EMAIL_USERNAME_REMINDER_BODY|param1|param2|param3}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-usernameReminder', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:COM_USERS_EMAIL_USERNAME_REMINDER_SUBJECT|param1}', '{trans:COM_USERS_EMAIL_USERNAME_REMINDER_BODY|param1|param2|param3}');
+					$data[] = "('{trans:COM_USERS_EMAIL_USERNAME_REMINDER_SUBJECT|param1}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-usernameReminder', 1, ".$conftemplate.")";
 				}
 				if(!in_array('joomla-confirmActiv', $JNotifications)){
-					$data[] = "('{trans:COM_USERS_EMAIL_ACTIVATED_BY_ADMIN_ACTIVATION_SUBJECT|param1|param2}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:COM_USERS_EMAIL_ACTIVATED_BY_ADMIN_ACTIVATION_SUBJECT|param1|param2}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:COM_USERS_EMAIL_ACTIVATED_BY_ADMIN_ACTIVATION_BODY|param1|param2|param3}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-confirmActiv', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:COM_USERS_EMAIL_ACTIVATED_BY_ADMIN_ACTIVATION_SUBJECT|param1|param2}', '{trans:COM_USERS_EMAIL_ACTIVATED_BY_ADMIN_ACTIVATION_BODY|param1|param2|param3}');
+					$data[] = "('{trans:COM_USERS_EMAIL_ACTIVATED_BY_ADMIN_ACTIVATION_SUBJECT|param1|param2}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-confirmActiv', 1, ".$conftemplate.")";
 				}
 				if(!in_array('joomla-resetPwd', $JNotifications)){
-					$data[] = "('{trans:COM_USERS_EMAIL_PASSWORD_RESET_SUBJECT|param1}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:COM_USERS_EMAIL_PASSWORD_RESET_SUBJECT|param1}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:COM_USERS_EMAIL_PASSWORD_RESET_BODY|param1|param2|param3}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-resetPwd', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:COM_USERS_EMAIL_PASSWORD_RESET_SUBJECT|param1}', '{trans:COM_USERS_EMAIL_PASSWORD_RESET_BODY|param1|param2|param3}');
+					$data[] = "('{trans:COM_USERS_EMAIL_PASSWORD_RESET_SUBJECT|param1}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-resetPwd', 1, ".$conftemplate.")";
 				}
 			} else{
 				if(!in_array('joomla-directReg', $JNotifications)){
-					$data[] = "('{trans:ACCOUNT DETAILS FOR|param1|param2}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:ACCOUNT DETAILS FOR|param1|param2}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:SEND_MSG|param1|param2|param3}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-directReg', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:ACCOUNT DETAILS FOR|param1|param2}', '{trans:SEND_MSG|param1|param2|param3}');
+					$data[] = "('{trans:ACCOUNT DETAILS FOR|param1|param2}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-directReg', 1, ".$conftemplate.")";
 				}
 				if(!in_array('joomla-ownActivReg', $JNotifications)){
-					$data[] = "('{trans:ACCOUNT DETAILS FOR|param1|param2}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:ACCOUNT DETAILS FOR|param1|param2}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:SEND_MSG_ACTIVATE|param1|param2|param3|param4|param5|param6}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-ownActivReg', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:ACCOUNT DETAILS FOR|param1|param2}', '{trans:SEND_MSG_ACTIVATE|param1|param2|param3|param4|param5|param6}');
+					$data[] = "('{trans:ACCOUNT DETAILS FOR|param1|param2}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-ownActivReg', 1, ".$conftemplate.")";
 				}
 				if(!in_array('joomla-usernameReminder', $JNotifications)){
-					$data[] = "('{trans:USERNAME_REMINDER_EMAIL_TITLE|param1}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:USERNAME_REMINDER_EMAIL_TITLE|param1}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:USERNAME_REMINDER_EMAIL_TEXT|param1|param2|param3}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-usernameReminder', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:USERNAME_REMINDER_EMAIL_TITLE|param1}', '{trans:USERNAME_REMINDER_EMAIL_TEXT|param1|param2|param3}');
+					$data[] = "('{trans:USERNAME_REMINDER_EMAIL_TITLE|param1}', '".$bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-usernameReminder', 1, ".$conftemplate.")";
 				}
 				if(!in_array('joomla-resetPwd', $JNotifications)){
-					$data[] = "('{trans:PASSWORD_RESET_CONFIRMATION_EMAIL_TITLE|param1}', '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
-		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
-			<tbody>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_4\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
-					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
-		<h3>{trans:PASSWORD_RESET_CONFIRMATION_EMAIL_TITLE|param1}<span style=\"display: none;\">&nbsp;</span></h3>
-		</td>
-					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_8\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_14\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
-					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">{trans:PASSWORD_RESET_CONFIRMATION_EMAIL_TEXT|param1|param2|param3}</td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" id=\"zone_20\">
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
-					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
-					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
-					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
-				</tr>
-				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
-					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" class=\"w600\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
-				</tr>
-			</tbody>
-		</table>
-		</div>', '', 0, 'joomlanotification', 0, 'joomla-resetPwd', 1, ".$conftemplate.")";
+					$bodyNotif = $this->getJoomlaNotification('{trans:PASSWORD_RESET_CONFIRMATION_EMAIL_TITLE|param1}', '{trans:PASSWORD_RESET_CONFIRMATION_EMAIL_TEXT|param1|param2|param3}');
+					$data[] = "('{trans:PASSWORD_RESET_CONFIRMATION_EMAIL_TITLE|param1}', '". $bodyNotif ."', '', 0, 'joomlanotification', 0, 'joomla-resetPwd', 1, ".$conftemplate.")";
 				}
 			}
 		}
@@ -731,6 +283,51 @@ class acyupdateHelper{
 		('RECEIVE', 'html', 'radio', '0::JOOMEXT_TEXT\n1::HTML', 1, 3, '', 1, 1, 1, 1, '1',1,0);";
 		$this->db->setQuery($query);
 		$this->db->query();
+
+	}
+
+	function getJoomlaNotification($subject, $body){
+		return '<div style=\"text-align: center; width: 100%; background-color:#ffffff;\">
+		<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"w600\" style=\"text-align: justify; margin: auto; width: 600px;\">
+			<tbody>
+				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_2\">
+					<td class=\"w600\" colspan=\"5\" style=\"background-color: #69b4c0;\" valign=\"bottom\" width=\"600\" id=\"zone_3\"><img id=\"zone_29\" alt=\" - - - \" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/top.png\"></td>
+				</tr>
+				<tr class=\"acyeditor_delete\" id=\"zone_4\">
+					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_5\"></td>
+					<td class=\"w520 acyeditor_text\" colspan=\"3\" height=\"80\" style=\"text-align: left; background-color: #ebebeb;\" width=\"520\" id=\"zone_6\"><strong>​</strong>​​​​​​​​<img alt=\"-\" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/message_icon.png\" style=\"float: left; margin-right: 10px;\">
+		<h3>'.$subject.'<span style=\"display: none;\">&nbsp;</span></h3>
+		</td>
+					<td class=\"acyeditor_picture w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_7\"></td>
+				</tr>
+				<tr class=\"acyeditor_delete\" id=\"zone_8\">
+					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_9\"></td>
+					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_10\"></td>
+					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_11\"></td>
+					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_12\"></td>
+					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_13\"></td>
+				</tr>
+				<tr class=\"acyeditor_delete\" id=\"zone_14\">
+					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_15\"></td>
+					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_16\"></td>
+					<td class=\"w480 pict acyeditor_text\" style=\"background-color: #fff; text-align: left;\" width=\"480\" id=\"zone_17\">'.$body.'</td>
+					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_18\"></td>
+					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_19\"></td>
+				</tr>
+				<tr class=\"acyeditor_delete\" id=\"zone_20\">
+					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_21\"></td>
+					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_22\"></td>
+					<td class=\"w480\" height=\"20\" style=\"background-color: #fff;\" width=\"480\" id=\"zone_23\"></td>
+					<td class=\"w20\" style=\"background-color: #fff;\" width=\"20\" id=\"zone_24\"></td>
+					<td class=\"w40\" style=\"background-color: #ebebeb;\" width=\"40\" id=\"zone_25\"></td>
+				</tr>
+				<tr class=\"acyeditor_delete\" style=\"line-height: 0px;\" id=\"zone_26\">
+					<td class=\"w600\" colspan=\"5\" style=\"background-color: #ebebeb;\" width=\"600\" id=\"zone_27\"><img id=\"zone_31\" alt=\" - - - \" border=\"0\" src=\"media/com_acymailing/templates/newsletter-4/images/bottom.png\"></td>
+				</tr>
+			</tbody>
+		</table>
+		</div>';
+
 
 	}
 
@@ -853,8 +450,8 @@ class acyupdateHelper{
 		$query .= '(\'Acknowledgement of receipt - in subject\', 2, \'(out|away) *(of|from)|vacation|holiday|absen|congés|recept|acknowledg|thank you for\', \'a:1:{s:7:"subject";s:1:"1";}\', \'a:1:{s:6:"delete";s:1:"1";}\', \'a:1:{s:3:"min";s:1:"0";}\', 1),';
 		$query .= '(\'Feedback loop\', 3, \'feedback|staff@hotmail.com\', \'a:2:{s:10:"senderinfo";s:1:"1";s:7:"subject";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:2:{s:3:"min";s:1:"0";s:5:"unsub";s:1:"1";}\', 1),';
 		$query .= '(\'Mailbox Full\', 4, \'((mailbox|mailfolder|storage|quota|space|inbox) *(is)? *(over)? *(exceeded|size|storage|allocation|full|quota|maxi))|status(-code)? *(:|=)? *5\.2\.2|((over|exceeded|full|exhausted) *(allowed)? *(mail|storage|quota))\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"3";s:5:"block";s:1:"1";}\', 1),';
-		$query .= '(\'Message blocked by recipient filters\',5, \'blocked *by|block *list|look(ed)? *like *spam|spam *detected|CXBL|CDRBL|IPBL|URLBL|(unacceptable|banned|offensive|filtered|blocked|unsolicited) *(content|message|e?-?mail)|(status(-code)?|554) *(:|=)? *5\.7\.1|administratively *denied|blacklisted *IP|policy *reasons|rejected.{1,10}spam|junkmail *rejected\', \'a:1:{s:4:"body";s:1:"1";}\', \'a:2:{s:6:"delete";s:1:"1";s:9:"forwardto";s:'.$forwardEmail.';}\', \'a:2:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";}\', 1),';
-		$query .= '(\'Mailbox does not exist\', 6, \'(Invalid|no such|unknown|bad|des?activated|undelivered|inactive|unrouteable) *(mail|destination|recipient|user|address|person)|RecipNotFound|status(-code)? *(:|=)? *5\.(1\.[1-6]|0\.0|4\.[0123467])|(user|mailbox|address|recipients?|host|account|domain) *(is|has been)? *(error|disabled|failed|unknown|unavailable|not *(found|available)|.{1,30}inactiv)|recipient *address *rejected|does *not *like *recipient|no *mailbox *here|user does.?n.t have.{0,20}account\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";s:5:"block";s:1:"1";}\', 1),';
+		$query .= '(\'Message blocked by recipient filters\',5, \'blocked *by|block *list|look(ed)? *like *spam|spam *detected|CXBL|CDRBL|IPBL|URLBL|(unacceptable|banned|offensive|filtered|blocked|unsolicited) *(content|message|e?-?mail)|(status(-code)?|554) *(:|=)? *5\.7\.1|administratively *denied|blacklisted *IP|policy *reasons|rejected.{1,10}spam|junkmail *rejected|exceeded.{1,10}max.{1,20}failures.{1,10}hour\', \'a:1:{s:4:"body";s:1:"1";}\', \'a:2:{s:6:"delete";s:1:"1";s:9:"forwardto";s:'.$forwardEmail.';}\', \'a:2:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";}\', 1),';
+		$query .= '(\'Mailbox does not exist\', 6, \'(Invalid|no such|unknown|bad|des?activated|undelivered|inactive|unrouteable) *(mail|destination|recipient|user|address|person)|RecipNotFound|status(-code)? *(:|=)? *5\.(1\.[1-6]|0\.0|4\.[0123467])|(user|mailbox|address|recipients?|host|account|domain) *(is|has been)? *(error|disabled|failed|unknown|unavailable|not *(found|available)|.{1,30}inactiv)|recipient *address *rejected|does *not *like *recipient|no *mailbox *here|user does.?n.t have.{0,30}account\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";s:5:"block";s:1:"1";}\', 1),';
 		$query .= '(\'Domain does not exist\', 7, \'No *MX *record|host *does *not *receive *any *mail|connection.{1,10}mail.{1,20}fail\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";s:5:"block";s:1:"1";}\', 1),';
 		$query .= '(\'Temporary failures\', 8, \'has.*been.*delayed|delayed *mail|message *delayed|temporar(il)?y *(failure|unavailable)|deferred|delayed *([0-9]*) *(hour|minut)|possible *mail *loop|too *many *hops|delivery *time *expired|Action: *delayed|status(-code)? *(:|=)? *4\.4\.6|will continue to be attempted\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"3";s:5:"block";s:1:"1";}\', 1),';
 		$query .= '(\'Failed Permanently\', 9, \'failed *permanently|permanent.{1,20}(failure|error)|not *accepting *(any)? *mail|does *not *exist|no *valid *route|delivery *failure\', \'a:2:{s:7:"subject";s:1:"1";s:4:"body";s:1:"1";}\', \'a:3:{s:4:"save";s:1:"1";s:6:"delete";s:1:"1";s:9:"forwardto";s:0:"";}\', \'a:3:{s:5:"stats";s:1:"1";s:3:"min";s:1:"0";s:5:"block";s:1:"1";}\', 1),';
@@ -863,6 +460,11 @@ class acyupdateHelper{
 
 		$this->db->setQuery($query);
 		$this->db->query();
+
+		$newConfig = new stdClass();
+		$newConfig->bouncerulesversion = $this->bouncerulesversion;
+		$config->save($newConfig);
+
 	}
 
 

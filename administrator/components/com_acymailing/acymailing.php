@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -27,13 +27,13 @@ $doc = JFactory::getDocument();
 $app = JFactory::getApplication();
 $cssBackend = $config->get('css_backend','default');
 if(!empty($cssBackend)){
-	$doc->addStyleSheet( ACYMAILING_CSS.'component_'.$cssBackend.'.css?v='.str_replace('.','',$config->get('version')));
+	$doc->addStyleSheet( ACYMAILING_CSS.'component_'.$cssBackend.'.css?v='.filemtime(ACYMAILING_MEDIA.'css'.DS.'component_'.$cssBackend.'.css'));
 }
 if(JRequest::getCmd('tmpl') == 'component'){
-	$doc->addStyleSheet( ACYMAILING_CSS.'frontendedition.css?v='.str_replace('.','',$config->get('version')));
+	$doc->addStyleSheet( ACYMAILING_CSS.'frontendedition.css?v='.filemtime(ACYMAILING_MEDIA.'css'.DS.'frontendedition.css'));
 }
 
-$doc->addScript(ACYMAILING_JS.'acymailing_compat.js?v='.str_replace('.','',$config->get('version')));
+$doc->addScript(ACYMAILING_JS.'acymailing_compat.js?v='.filemtime(ACYMAILING_MEDIA.'js'.DS.'acymailing_compat.js'));
 
 JHTML::_('behavior.tooltip');
 
@@ -55,7 +55,7 @@ if(empty($action)){
 	JRequest::setVar('task', $action);
 }
 
-if($taskGroup !== 'toggle' && JRequest::getString('tmpl') !== 'component' && !JRequest::getInt('hidemainmenu') && $config->get('menu_position','under') == 'above' && (!in_array($action,array('add','edit','preview','savepreview','export','import','apply','doexport','continuesend')) || $taskGroup === 'cpanel') && !in_array($taskGroup,array('filter'))){
+if($taskGroup !== 'toggle' && JRequest::getString('tmpl') !== 'component' && !JRequest::getInt('hidemainmenu') && $config->get('menu_position','under') == 'above' && (!in_array($action,array('add','edit','preview','savepreview','export','import','apply','doexport','continuesend','load')) || $taskGroup === 'cpanel') && !in_array($taskGroup,array('filter'))){
 	$menuHelper = acymailing_get('helper.acymenu');
 	echo $menuHelper->display($taskGroup);
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -210,6 +210,12 @@ class CpanelViewCpanel extends acymailingView
 			$tracking_system = acymailing_getUpgradeLink('essential');
 		}
 		$elements->tracking_system = $tracking_system;
+
+		$indexType = $config->get('indexFollow', '');
+		$indexFollow = '<input type="checkbox" name="config[indexFollow][]" id="indexFollow[0]" value="noindex" style="margin-left:10px" '. (stripos($indexType, 'noindex')!==false?'checked="checked"':'') .'/> <label for="indexFollow[0]">noindex</label>';
+		$indexFollow .= '<input type="checkbox" name="config[indexFollow][]" id="indexFollow[1]" value="nofollow" style="margin-left:10px" '. (stripos($indexType, 'nofollow')!==false?'checked="checked"':'') .'/> <label for="indexFollow[1]">nofollow</label>';
+		$indexFollow .= '<input type="hidden" name="config[indexFollow][]" value="1"/>';
+		$elements->indexFollow = $indexFollow;
 
 		if(acymailing_level(3)){
 			$geolocAvailable = true;

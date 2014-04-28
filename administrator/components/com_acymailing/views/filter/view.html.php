@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -214,7 +214,7 @@ class FilterViewFilter extends acymailingView
 
 		$this->assignRef('triggers',$triggers);
 		if(JRequest::getCmd('tmpl') == 'component'){
-			$doc->addStyleSheet( ACYMAILING_CSS.'frontendedition.css' );
+			$doc->addStyleSheet( ACYMAILING_CSS.'frontendedition.css?v='.filemtime(ACYMAILING_MEDIA.'css'.DS.'frontendedition.css'));
 		}
 
 		if(acymailing_level(3) AND JRequest::getCmd('tmpl') != 'component'){

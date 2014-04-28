@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -37,8 +37,6 @@ class acymailerHelper extends acymailingPHPMailer {
 
 	var $app;
 
-	var $forceTemplate = 0;
-
 	var $alreadyCheckedAddresses = false;
 
 	var $checkPublished = true;
@@ -46,8 +44,6 @@ class acymailerHelper extends acymailingPHPMailer {
 	var $introtext;
 
 	var $trackEmail = false;
-
-	var $commentTest = '';
 
 	public $From              = '';
 
@@ -320,10 +316,6 @@ class acymailerHelper extends acymailingPHPMailer {
 				$this->errorNumber = 2;
 				return false;
 			}
-		}
-
-		if(!empty($this->forceTemplate) AND empty($this->defaultMail[$mailid]->tempid)){
-			$this->defaultMail[$mailid]->tempid = $this->forceTemplate;
 		}
 
 

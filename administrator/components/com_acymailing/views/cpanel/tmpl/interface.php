@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -94,7 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('USE_BOOTSTRAP_FRONTEND'); ?>
 				</td>
 				<td>
-					<?php echo JHTML::_('acyselect.booleanlist', "config[bootstrap_frontend]" , '',$this->config->get('bootstrap_frontend',1)); ?>
+					<?php echo JHTML::_('acyselect.booleanlist', "config[bootstrap_frontend]" , '',$this->config->get('bootstrap_frontend',0)); ?>
 				</td>
 			</tr>
 			<?php } ?>
@@ -287,6 +287,14 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php echo JHTML::_('acyselect.booleanlist', "config[open_popup]" , '',$this->config->get('open_popup',1) ); ?>
 				<?php echo JText::_('CAPTCHA_WIDTH'); ?> <input type="text" name="config[popup_width]" style="width:30px" value="<?php echo intval($this->config->get('popup_width',750)); ?>" /> x <?php echo JText::_('CAPTCHA_HEIGHT'); ?> <input type="text" name="config[popup_height]"  style="width:30px" value="<?php echo intval($this->config->get('popup_height',550)); ?>" />
+			</td>
+		</tr>
+		<tr>
+			<td class="key" >
+			<?php echo acymailing_tooltip(JText::_('ARCHIVE_INDEX_FOLLOW_DESC'), JText::_('ARCHIVE_INDEX_FOLLOW'), '', JText::_('ARCHIVE_INDEX_FOLLOW')); ?>
+			</td>
+			<td>
+				<?php echo $this->elements->indexFollow; ?>
 			</td>
 		</tr>
 		</table>

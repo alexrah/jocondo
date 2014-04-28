@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -429,9 +429,9 @@ if (is_callable("date_default_timezone_set")) date_default_timezone_set(@date_de
 		$moduleCSS = $config->get('css_module','default');
 		if(!empty($moduleCSS)){
 			if($includejs == 'header'){
-				$doc->addStyleSheet( ACYMAILING_CSS.'module_'.$moduleCSS.'.css' );
+				$doc->addStyleSheet( ACYMAILING_CSS.'module_'.$moduleCSS.'.css?v='.filemtime(ACYMAILING_MEDIA.'css'.DS.'module_'.$moduleCSS.'.css'));
 			}else{
-				echo "\n".'<link rel="stylesheet" href="'.ACYMAILING_CSS.'module_'.$moduleCSS.'.css" type="text/css" />'."\n";
+				echo "\n".'<link rel="stylesheet" href="'.ACYMAILING_CSS.'module_'.$moduleCSS.'.css?v='.filemtime(ACYMAILING_MEDIA.'css'.DS.'module_'.$moduleCSS.'.css').'" type="text/css" />'."\n";
 			}
 		}
 	}
@@ -775,23 +775,23 @@ acymailing_loadLanguage();
 $app = JFactory::getApplication();
 $config = acymailing_config();
 if($app->isAdmin()){
-	if(!$config->get('ssl_links', 0)){
-		define('ACYMAILING_LIVE',rtrim(str_replace('https:','http:',JURI::root()),'/').'/');
-	} else{
-		define('ACYMAILING_LIVE',rtrim(str_replace('http:','https:',JURI::root()),'/').'/');
-	}
 	define('ACYMAILING_IMAGES','../media/'.ACYMAILING_COMPONENT.'/images/');
 	define('ACYMAILING_CSS','../media/'.ACYMAILING_COMPONENT.'/css/');
 	define('ACYMAILING_JS','../media/'.ACYMAILING_COMPONENT.'/js/');
 }else{
-	define('ACYMAILING_LIVE',rtrim(JURI::root(),'/').'/');
 	define('ACYMAILING_IMAGES',JURI::base(true).'/media/'.ACYMAILING_COMPONENT.'/images/');
 	define('ACYMAILING_CSS',JURI::base(true).'/media/'.ACYMAILING_COMPONENT.'/css/');
 	define('ACYMAILING_JS',JURI::base(true).'/media/'.ACYMAILING_COMPONENT.'/js/');
 }
 
+if(!$config->get('ssl_links', 0)){
+	define('ACYMAILING_LIVE',rtrim(str_replace('https:','http:',JURI::root()),'/').'/');
+} else{
+	define('ACYMAILING_LIVE',rtrim(str_replace('http:','https:',JURI::root()),'/').'/');
+}
+
 JHTML::_('select.booleanlist','acymailing');
-if(ACYMAILING_J30 && ($app->isAdmin() || $config->get('bootstrap_frontend',1))){
+if(ACYMAILING_J30 && ($app->isAdmin() || $config->get('bootstrap_frontend',0))){
 	require(ACYMAILING_BACK.'compat'.DS.'bootstrap.php');
 }else{
 	class JHtmlAcyselect extends JHTMLSelect{}

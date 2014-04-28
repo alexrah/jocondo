@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -405,7 +405,7 @@ class NewsletterViewNewsletter extends acymailingView
 			if(replyname.length>1){document.getElementById('replyname').value = replyname;}
 			if(replyemail.length>1){document.getElementById('replyemail').value = replyemail;}
 			if(newsubject.length>1){document.getElementById('subject').value = newsubject;}
-			".$editor->setStylesheet('tempid')."
+			".$editor->setEditorStylesheet('tempid')."
 		}
 		";
 
@@ -463,9 +463,6 @@ class NewsletterViewNewsletter extends acymailingView
 			JHTML::_('behavior.modal','a.modal');
 			$this->assign('frequencyType',acymailing_get('type.frequency'));
 			$this->assign('generatingMode',acymailing_get('type.generatemode'));
-			$link = 'index.php?option=com_acymailing&amp;tmpl=component&amp;ctrl=email&amp;task=edit&amp;mailid=notification_autonews';
-			$values->editnotification = '<a class="modal" href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 500}}"><button class="btn" onclick="return false">'.JText::_('EDIT_NOTIFICATION_MAIL').'</button></a>';
-
 		}
 
 		$this->assignRef('toggleClass',$toggleClass);

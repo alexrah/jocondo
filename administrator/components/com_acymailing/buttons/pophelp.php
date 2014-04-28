@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -50,7 +50,7 @@ class JButtonPophelp extends JButton
 				}
 			} openHelp = !openHelp; return false;}";
 		$doc->addScriptDeclaration( $js );
-		if(!ACYMAILING_J30)
+		if(JRequest::getCmd('tmpl') == 'component' || !ACYMAILING_J30)
 			return '<a href="'.$url.'" target="_blank" onclick="return displayDoc();" class="toolbar"><span class="icon-32-help" title="'.JText::_('ACY_HELP',true).'"></span>'.JText::_('ACY_HELP').'</a>';
 		return '<button class="btn btn-small" onclick="return displayDoc();"><i class="icon-help"></i> '.JText::_('ACY_HELP').'</button>';
 	}

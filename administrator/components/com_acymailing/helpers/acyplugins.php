@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -131,8 +131,8 @@ class acypluginsHelper{
 	{
 		$text = preg_replace('#\[embed=videolink][^}]*youtube[^=]*=([^"/}]*)[^}]*}\[/embed]#i', '<a href="http://www.youtube.com/watch?v=$1"><img src="http://img.youtube.com/vi/$1/0.jpg"/></a>', $text);
 		$text = preg_replace('#<video[^>]*youtube\.com/embed/([^"/]*)[^>]*>[^>]*</video>#i', '<a href="http://www.youtube.com/watch?v=$1"><img src="http://img.youtube.com/vi/$1/0.jpg"/></a>', $text);
-		$text = preg_replace('#\[embed=videolink][^}]*video":"([^"]*)[^}]*}\[/embed]#i', '<a href="$1">Video</a>', $text); //TODO:insert image
-		$text = preg_replace('#<video[^>]*src="([^"]*)"[^>]*>[^>]*</video>#i', '<a href="$1">Video</a>', $text);
+		$text = preg_replace('#\[embed=videolink][^}]*video":"([^"]*)[^}]*}\[/embed]#i', '<a href="$1"><img src="'.ACYMAILING_IMAGES.'/video.png"/></a>', $text);
+		$text = preg_replace('#<video[^>]*src="([^"]*)"[^>]*>[^>]*</video>#i', '<a href="$1"><img src="'.ACYMAILING_IMAGES.'/video.png"/></a>', $text);
 		return $text;
 	}
 
@@ -230,6 +230,38 @@ class acypluginsHelper{
 		$this->cleanEditorCode($html);
 	}
 
+	public function fixPictureDim(&$html){
+		if(!preg_match_all('#(<img)([^>]*>)#i',$html,$results)) return;
+
+		$replace = array();
+		foreach($results[0] as $num => $oneResult){
+			if(isset($replace[$oneResult])) continue;
+
+			if(strpos($oneResult,'width=') || strpos($oneResult,'height=')) continue;
+			if(preg_match('#[^a-z_\-]width *:([0-9 ]{1,8})px#i',$oneResult,$res) || preg_match('#[^a-z_\-]height *:([0-9 ]{1,8})px#i',$oneResult,$res)) continue;
+
+			if(!preg_match('#src="([^"]*)"#i',$oneResult,$url)) continue;
+
+			$imageUrl = $url[1];
+
+			$otheracymailinglive = str_replace('http://www.','http://',ACYMAILING_LIVE);
+			if($otheracymailinglive == ACYMAILING_LIVE) $otheracymailinglive = str_replace('http://','http://www.',ACYMAILING_LIVE);
+			if(strpos($imageUrl,ACYMAILING_LIVE) !== false || strpos($imageUrl,$otheracymailinglive) !== false){
+				$imageUrl = str_replace(array(ACYMAILING_LIVE,$otheracymailinglive,'/'),array(ACYMAILING_ROOT,ACYMAILING_ROOT,DS),urldecode($imageUrl));
+			}
+
+			$dim = @getimagesize($imageUrl);
+			if(!$dim) continue;
+
+			$replace[$oneResult] = str_replace('<img','<img width="'.$dim[0].'" height="'.$dim[1].'"',$oneResult);
+
+		}
+
+		if(empty($replace)) return;
+
+		$html = str_replace(array_keys($replace),$replace,$html);
+	}
+
 	private function cleanEditorCode(&$html){
 		if(!strpos($html,'cke_edition_en_cours')) return;
 
@@ -292,6 +324,7 @@ class acypluginsHelper{
 		$allowedTags[] = 'strong';
 		$allowedTags[] = 'i';
 		$allowedTags[] = 'em';
+		$allowedTags[] = 'a';
 
 		$aloneAllowedTags = array();
 		$aloneAllowedTags[] = 'br';
@@ -305,7 +338,6 @@ class acypluginsHelper{
 		$numChar = strlen($newText);
 
 		$numCharStrip = strlen(strip_tags($newText));
-
 
 		if($numCharStrip <= $tag->wrap)
 			return $newText;

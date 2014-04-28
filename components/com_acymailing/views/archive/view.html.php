@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -87,6 +87,21 @@ class archiveViewArchive extends acymailingView
 		return $this->view();
 	}
 
+	private function addFeed(){
+
+		$config = acymailing_config();
+		$document = JFactory::getDocument();
+
+		$link	= '&format=feed&limitstart=';
+		if($config->get('acyrss_format') == 'rss'  || $config->get('acyrss_format') == 'both'){
+			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+			$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
+		}
+		if($config->get('acyrss_format') == 'atom' || $config->get('acyrss_format') == 'both'){
+			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+			$document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
+		}
+	}
 
 	function listing(){
 		global $Itemid;
@@ -202,19 +217,10 @@ class archiveViewArchive extends acymailingView
 			$pathway->addItem($values->page_title);
 		}
 
-
 		$document = JFactory::getDocument();
 		$document->setTitle( $values->page_title );
 
-		$link	= '&format=feed&limitstart=';
-		if($config->get('acyrss_format') == 'rss'  || $config->get('acyrss_format') == 'both'){
-			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			$document->addHeadLink(JRoute::_($link.'&type=rss'), 'alternate', 'rel', $attribs);
-		}
-		if($config->get('acyrss_format') == 'atom' || $config->get('acyrss_format') == 'both'){
-			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			$document->addHeadLink(JRoute::_($link.'&type=atom'), 'alternate', 'rel', $attribs);
-		}
+		$this->addFeed();
 
 		$db = JFactory::getDBO();
 
@@ -328,6 +334,10 @@ class archiveViewArchive extends acymailingView
 
 		$document = JFactory::getDocument();
 
+		$this->addFeed();
+
+
+
 		$pathway = $app->getPathway();
 		$my = JFactory::getUser();
 
@@ -361,6 +371,13 @@ class archiveViewArchive extends acymailingView
 			if ($menuparams->get('robots')) $document->setMetadata('robots',$menuparams->get('robots'));
 			if ($menuparams->get('page_title')) $document->setTitle($menuparams->get('page_title'));
 		}
+
+		$config = acymailing_config();
+		$indexFollow = $config->get('indexFollow', '');
+		$tagIndFol = array();
+		if(strpos($indexFollow, 'noindex') !== false) $tagIndFol[] = 'noindex';
+		if(strpos($indexFollow, 'nofollow') !== false) $tagIndFol[] = 'nofollow';
+		if(!empty($tagIndFol)) $document->setMetadata('robots',implode(',',$tagIndFol));
 
 		if(!empty($listid)){
 			 $listClass = acymailing_get('class.list');

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -42,7 +42,7 @@ $doc->addScript(ACYMAILING_JS.'acymailing_compat.js?v='.str_replace('.','',$conf
 
 $cssFrontend = $config->get('css_frontend','default');
 if(!empty($cssFrontend)){
-	$doc->addStyleSheet( ACYMAILING_CSS.'component_'.$cssFrontend.'.css' );
+	$doc->addStyleSheet( ACYMAILING_CSS.'component_'.$cssFrontend.'.css?v='.filemtime(ACYMAILING_MEDIA.'css'.DS.'component_'.$cssFrontend.'.css'));
 }
 
 if($taskGroup == 'newsletter') $taskGroup = 'frontnewsletter';

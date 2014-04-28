@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -64,7 +64,7 @@ class com_acymailingInstallerScript {
 class acymailingInstall{
 
 	var $level = 'starter';
-	var $version = '4.6.0';
+	var $version = '4.6.2';
 	var $update = false;
 	var $fromLevel = '';
 	var $fromVersion = '';
@@ -548,7 +548,7 @@ class acymailingInstall{
 			}
 
 			try{
-				$this->db->setQuery('ALTER TABLE `#__acymailing_template` ADD `access` VARCHAR( 250 ) NULL DEFAULT \'all\'');
+				$this->db->setQuery("ALTER TABLE `#__acymailing_template` ADD `access` VARCHAR( 250 ) NULL DEFAULT 'all'");
 				$res = $this->db->query();
 			}catch(Exception $e){
 				$res = null;
@@ -693,7 +693,7 @@ class acymailingInstall{
 		$allPref['hostname'] =  '';
 		$allPref['embed_images'] = '0';
 		$allPref['embed_files'] = '1';
-		$allPref['editor'] = '0';
+		$allPref['editor'] = 'acyeditor';
 		$allPref['multiple_part'] =  '1';
 		$allPref['smtp_host'] =  $smtpinfos[0];
 		$allPref['smtp_port'] =  '';
@@ -744,6 +744,7 @@ class acymailingInstall{
 		$allPref['css_module'] = 'default';
 		$allPref['css_frontend'] = 'default';
 		$allPref['css_backend'] = 'default';
+		$allPref['bootstrap_frontend'] = 0;
 
 		$allPref['menu_position'] = 'under';
 		$allPref['unsub_reasons'] = serialize(array('UNSUB_SURVEY_FREQUENT','UNSUB_SURVEY_RELEVANT'));

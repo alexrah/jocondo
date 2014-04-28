@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -13,9 +13,9 @@ class editorType{
 
 	function editorType(){
 		if(!ACYMAILING_J16){
-			$query = 'SELECT element,name FROM '.acymailing_table('plugins',false).' WHERE folder=\'editors\' AND published=1 ORDER BY ordering ASC, name ASC';
+			$query = 'SELECT DISTINCT element,name FROM '.acymailing_table('plugins',false).' WHERE folder=\'editors\' AND published=1 ORDER BY ordering ASC, name ASC';
  		}else{
-			$query = 'SELECT element,name FROM '.acymailing_table('extensions',false).' WHERE folder=\'editors\' AND enabled=1 AND type=\'plugin\' ORDER BY ordering ASC, name ASC';
+			$query = 'SELECT DISTINCT element,name FROM '.acymailing_table('extensions',false).' WHERE folder=\'editors\' AND enabled=1 AND type=\'plugin\' ORDER BY ordering ASC, name ASC';
 		}
 
 		$db = JFactory::getDBO();

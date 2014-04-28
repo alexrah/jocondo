@@ -33,7 +33,7 @@ it's not loaded until the first menu open up,
 - **dialog.css**: the CSS files for the dialog UI, it's not loaded until the first dialog open,
 - **reset.css**: the file defines the basis of style resets among all editor UI spaces,
 - **preset.css**: the file defines the default styles of some UI elements reflecting the skin preference,
-- **editor_XYZ.css** and **dialog_XYZ.css**: browser specific CSS issue.
+- **editor_XYZ.css** and **dialog_XYZ.css**: browser specific CSS hacks.
 
 Other parts:
 - **skin.js**: the only JavaScript part of the skin that registers the skin, its browser specific files and its icons and defines the Chameleon feature,
@@ -44,7 +44,7 @@ Other parts:
 License
 -------
 
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
 
 Licensed under the terms of any of the following licenses at your choice: [GPL](http://www.gnu.org/licenses/gpl.html), [LGPL](http://www.gnu.org/licenses/lgpl.html) and [MPL](http://www.mozilla.org/MPL/MPL-1.1.html).
 

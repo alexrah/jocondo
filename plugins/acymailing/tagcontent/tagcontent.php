@@ -1,7 +1,7 @@
 <?php
 /**
  * @package	AcyMailing for Joomla!
- * @version	4.6.0
+ * @version	4.6.2
  * @author	acyba.com
  * @copyright	(C) 2009-2014 ACYBA S.A.R.L. All rights reserved.
  * @license	GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -832,8 +832,8 @@ class plgAcymailingTagcontent extends JPlugin
 				$db->setQuery('SELECT sef FROM #__languages WHERE lang_code = '.$db->Quote($article->language).' ORDER BY `published` DESC LIMIT 1');
 				$this->langcodes[$article->language] = $db->loadResult();
 				if(empty($this->langcodes[$article->language])) $this->langcodes[$article->language] = $article->language;
-				$link.= (strpos($link,'?') ? '&' : '?') . 'lang='.$this->langcodes[$article->language];
 			}
+			$link.= (strpos($link,'?') ? '&' : '?') . 'lang='.$this->langcodes[$article->language];
 		}
 
 		$link = acymailing_frontendLink($link);
