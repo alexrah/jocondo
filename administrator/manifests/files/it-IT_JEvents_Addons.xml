@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="1.6" type="file" client="site" method="upgrade">
+<name>Italian Translation for JEvents Addons</name>
+<tag>it-IT</tag>
+<version>3.140205</version>
+<creationdate>2014.02.05</creationdate>
+<author>HaZaRd</author>
+<authoremail>drh@gt5italia.it</authoremail>
+<authorurl>www.gt5italia.it</authorurl>
+<copyright>
+</copyright>
+<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+<description>File di lingua italiana per Addons di JEvents (frontend/backend) | Italian language file for Jevents Addons (frontend/backend)</description>
+<fileset>
+<files folder="admin" target="administrator/language/it-IT">
+	<filename>it-IT.com_jeventstags.ini</filename>
+	<filename>it-IT.com_jeventstags.menu.ini</filename>
+	<filename>it-IT.com_jeventstags.sys.ini</filename>
+	<filename>it-IT.com_jevlocations.ini</filename>
+	<filename>it-IT.com_jevlocations.menu.ini</filename>
+	<filename>it-IT.com_jevlocations.sys.ini</filename>
+	<filename>it-IT.com_jevpeople.ini</filename>
+	<filename>it-IT.com_jevpeople.menu.ini</filename>
+	<filename>it-IT.com_jevpeople.sys.ini</filename>
+	<filename>it-IT.com_rsvppro.ini</filename>
+	<filename>it-IT.com_rsvppro.menu.ini</filename>
+	<filename>it-IT.com_rsvppro.sys.ini</filename>
+	<filename>it-IT.jevlocsearch.ini</filename>
+	<filename>it-IT.mod_jevents_calendarplus.ini</filename>
+	<filename>it-IT.mod_jevents_create.ini</filename>
+	<filename>it-IT.mod_jevents_notify.ini</filename>
+	<filename>it-IT.mod_tabbedmodules.ini</filename>
+	<filename>it-IT.mod_tabbedmodules.sys.ini</filename>
+	<filename>it-IT.plg_community_jevents.ini</filename>
+	<filename>it-IT.plg_content_jevent_embed.ini</filename>
+	<filename>it-IT.plg_content_jevent_embed.sys.ini</filename>
+	<filename>it-IT.plg_content_jevlocation_embed.ini</filename>
+	<filename>it-IT.plg_editors-xtd_jevents.ini</filename>
+	<filename>it-IT.plg_editors-xtd_jevents.sys.ini</filename>
+	<filename>it-IT.plg_jevents_agendaminutes.ini</filename>
+	<filename>it-IT.plg_jevents_agendaminutes.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevanonuser.ini</filename>
+	<filename>it-IT.plg_jevents_jevanonuser.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevcalendar.ini</filename>
+	<filename>it-IT.plg_jevents_jevcalendar.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevcatcal.ini</filename>
+	<filename>it-IT.plg_jevents_jevcatcal.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevcb.ini</filename>
+	<filename>it-IT.plg_jevents_jevcck.ini</filename>
+	<filename>it-IT.plg_jevents_jevcustomfields.ini</filename>
+	<filename>it-IT.plg_jevents_jevfacebook.ini</filename>
+	<filename>it-IT.plg_jevents_jevfeatured.ini</filename>
+	<filename>it-IT.plg_jevents_jevfeatured.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevfiles.ini</filename>
+	<filename>it-IT.plg_jevents_jevfiles.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevgroupevent.ini</filename>
+	<filename>it-IT.plg_jevents_jevhiddendetail.ini</filename>
+	<filename>it-IT.plg_jevents_jevhiddendetail.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevjsstream.ini</filename>
+	<filename>it-IT.plg_jevents_jevjxcomments.ini</filename>
+	<filename>it-IT.plg_jevents_jevlocations.ini</filename>
+	<filename>it-IT.plg_jevents_jevmatchingevents.ini</filename>
+	<filename>it-IT.plg_jevents_jevmatchingevents.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevmetatags.ini</filename>
+	<filename>it-IT.plg_jevents_jevmetatags.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevnotify.ini</filename>
+	<filename>it-IT.plg_jevents_jevnotify.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevpaidsubs.ini</filename>
+	<filename>it-IT.plg_jevents_jevpeople.ini</filename>
+	<filename>it-IT.plg_jevents_jevrsvp.ini</filename>
+	<filename>it-IT.plg_jevents_jevrsvp.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevrsvppro.ini</filename>
+	<filename>it-IT.plg_jevents_jevsendfb.ini</filename>
+	<filename>it-IT.plg_jevents_jevtags.ini</filename>
+	<filename>it-IT.plg_jevents_jevtimelimit.ini</filename>
+	<filename>it-IT.plg_jevents_jevudjacomments.ini</filename>
+	<filename>it-IT.plg_jevents_jevusers.ini</filename>
+	<filename>it-IT.plg_jevents_jevusers.sys.ini</filename>
+	<filename>it-IT.plg_jevents_jevweekdays.ini</filename>
+	<filename>it-IT.plg_jnews_jnewsjevents.ini</filename>
+	<filename>it-IT.plg_jnewsletter_jnewsjevents.ini</filename>
+	<filename>it-IT.plg_rsvppro_authorizenet.ini</filename>
+	<filename>it-IT.plg_rsvppro_manual.ini</filename>
+	<filename>it-IT.plg_rsvppro_paypalipn.ini</filename>
+	<filename>it-IT.plg_rsvppro_smsreminders.ini</filename>
+	<filename>it-IT.plg_rsvppro_smsreminders.sys.ini</filename>
+	<filename>it-IT.plg_rsvppro_userpoints.ini</filename>
+	<filename>it-IT.plg_rsvppro_virtuemart.ini</filename>
+	<filename>it-IT.plg_search_jevlocsearch.ini</filename>
+	<filename>it-IT.plg_system_autotweetjevents.ini</filename>
+	<filename>it-IT.plg_system_autotweetjevents.sys.ini</filename>
+	<filename>it-IT.plg_user_jevuser.ini</filename>
+	<filename>it-IT.plg_vmcustom_rsvppro.ini</filename>
+</files>
+<files folder="site" target="language/it-IT">
+	<filename>it-IT.com_jeventstags.ini</filename>
+	<filename>it-IT.com_jevlocations.ini</filename>
+	<filename>it-IT.com_jevpeople.ini</filename>
+	<filename>it-IT.com_rsvppro.ini</filename>
+	<filename>it-IT.mod_jevents_dynamiclegend.ini</filename>
+	<filename>it-IT.mod_jevents_notify.ini</filename>
+	<filename>it-IT.mod_jevents_paidsubs.ini</filename>
+	<filename>it-IT.plg_jevents_jevanonuser.ini</filename>
+	<filename>it-IT.plg_jevents_jevfiles.ini</filename>
+</files>
+</fileset>
+</extension>
