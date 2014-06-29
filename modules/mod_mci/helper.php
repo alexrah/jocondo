@@ -81,6 +81,8 @@ class modMCIHelper
 		$catContactOrderBy = $params->get('category_contact_order', 'contact.ordering ASC');
 		$includeSubCategories = $params->get('category_include_sub_categories', 1);
 		
+		$access = implode(',', array_unique(JFactory::getUser()->getAuthorisedViewLevels()));
+		
 		// Start query
 		$now = MWSDatabase::getDateSql();
 		$nullDate = MWS::$db->getnullDate();
@@ -89,6 +91,8 @@ class modMCIHelper
 		$query->join('LEFT', '#__categories AS categories ON contact.catid = categories.id');
 		$query->join('LEFT', '#__categories AS parent_categories ON contact.catid = parent_categories.parent_id');
 		$query->where('contact.published = 1');
+		$query->where('contact.access IN (' . $access . ')');
+		$query->where('categories.access IN (' . $access . ')');
 		$query->where('categories.published = 1');
 		$query->where('(contact.publish_up = ' . MWS::$db->Quote($nullDate).' OR contact.publish_up <= ' . MWS::$db->Quote($now).')');
 		$query->where('(contact.publish_down = ' . MWS::$db->Quote($nullDate).' OR contact.publish_down >= ' . MWS::$db->Quote($now).')');
@@ -138,12 +142,15 @@ class modMCIHelper
 		$contactIds = $params->get('contacts', '');
 		$contactOrderBy = $params->get('contact_order', 'contact.ordering ASC');
 		
+		$access = implode(',', array_unique(JFactory::getUser()->getAuthorisedViewLevels()));
+		
 		// Start query
 		$now = MWSDatabase::getDateSql();
 		$nullDate = MWS::$db->getnullDate();
 		$query->select('contact.*');
 		$query->from('#__contact_details AS contact');
 		$query->where('contact.published = 1');
+		$query->where('contact.access IN (' . $access . ')');
 		$query->where('(contact.publish_up = ' . MWS::$db->Quote($nullDate).' OR contact.publish_up <= ' . MWS::$db->Quote($now).')');
 		$query->where('(contact.publish_down = ' . MWS::$db->Quote($nullDate).' OR contact.publish_down >= ' . MWS::$db->Quote($now).')');
 		
